@@ -1,0 +1,42 @@
+@startuml diagrama-flujo
+
+!include style/midnight-cyber.puml
+
+title Sistema de Riego Inteligente
+
+node "Servidor Central" {
+  node "Backend API Gateway" {
+    [Microservicios Backend] 
+    [Motor IA]
+  }
+  database "Base de Datos" as BD
+}
+
+cloud "Internet" {
+  node "Frontend Web" as FE
+}
+
+node "Dispositivos IoT" {
+  [Sensores de Humedad]
+  [Actuadores de Riego]
+}
+
+actor "Administrador" as Admin
+actor "Usuario Final" as User
+
+' Conexiones
+Admin -- FE : HTTPS
+User -- FE : HTTPS
+
+FE --> "Backend API Gateway" : Peticiones REST
+"Backend API Gateway" --> [Microservicios Backend]
+"Backend API Gateway" --> [Motor IA]
+[Microservicios Backend] --> BD : Consultas SQL
+[Motor IA] --> BD : Lectura de Datos
+
+[Microservicios Backend] --> [Sensores de Humedad] : Solicita lecturas
+[Microservicios Backend] --> [Actuadores de Riego] : Orden de riego
+
+[Actuadores de Riego] --> [Sensores de Humedad] : Feedback instantáneo
+
+@enduml

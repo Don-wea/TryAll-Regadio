@@ -1,0 +1,37 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Entornos virtuales
+env/
+venv/
+.virtualenv/
+
+# Variables de entorno
+.env
+
+# Salidas de compilación
+build/
+dist/
+out/
+*.o
+*.exe
+*.dll
+*.so
+
+# Base de datos local o backups
+database/backups/
+
+# Node modules u otras dependencias pesadas
+node_modules/
+
+# Python cache
+__pycache__/
