@@ -1,6 +1,8 @@
 # Entorno virtual (ajusta el nombre si es distinto)
 venv/
 env/
+*venv/
+*venv
 
 # Archivos de configuración de entorno
 .env
@@ -60,8 +62,6 @@ dist/
 # Archivos de docker (si los tienes)
 *.pid
 
-# Archivos pyenv
-.python-version
 
 # Archivos de pipenv (si algún colaborador usa)
 Pipfile.lock
