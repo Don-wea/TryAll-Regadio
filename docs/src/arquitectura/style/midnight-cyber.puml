@@ -1,0 +1,161 @@
+@startuml midnight-cyber
+' ===== PALETTE: MIDNIGHT CYBER =====
+
+' Primary electric blue
+!$primary = "#5D8BF4"
+
+' Secondary neon purple
+!$secondary = "#AA77FF"
+
+' Glow variants
+!$primary_light = "#85A6FF"
+!$primary_dark = "#3A5BC7"
+!$secondary_light = "#C9A3FF"
+!$secondary_dark = "#7D55C7"
+
+' Cyber accents
+!$accent_cyan = "#00F5E9"
+!$accent_pink = "#FF5D9D"
+
+' Dark backgrounds
+!$bg_dark = "#0F0F1A"
+!$bg_medium = "#1A1A2E"
+!$bg_light = "#252545"
+!$bg_lighter = "#34345A"
+
+' High-contrast text
+!$text_primary = "#F0F4FF"
+!$text_secondary = "#C2C8FF"
+!$text_highlight = "#FFFFFF"
+
+' UI Parameters
+!$border_radius = 4
+!$border_thickness = 1.5
+!$font_main = "'Fira Code', monospace"
+!$font_title_size = 24
+!$font_large = 16
+!$font_medium = 13
+!$font_small = 11
+
+
+
+skinparam Shadowing false
+skinparam Handwritten false
+
+<style>
+
+' ================ GLOBAL CONFIG ================
+root {
+  BackgroundColor $bg_dark
+  LineColor $primary
+  FontName $font_main
+  FontSize $font_medium
+  FontColor $text_primary
+}
+
+
+' ============== SHARED ELEMENTS ================
+rectangle, activity, object, component, node, actor, cloud, package, database, file, usecase {
+  BackgroundColor $bg_medium
+  LineColor $primary
+  FontColor $text_primary
+  RoundCorner $border_radius
+  BorderThickness $border_thickness
+}
+
+
+
+participant {
+  BackgroundColor $bg_light
+  LineColor $accent_cyan
+  FontColor $text_highlight
+  RoundCorner 10
+  FontStyle bold
+}
+
+diamond, activityDiamond {
+  BackgroundColor $bg_light
+  LineColor $accent_pink
+  FontColor $text_highlight
+  RoundCorner $border_radius
+}
+
+partition, swimlane {
+  BackgroundColor $bg_light
+  LineColor $secondary_dark
+  FontColor $text_primary
+  LineThickness $border_thickness
+}
+
+arrow {
+  LineColor $primary_light
+  LineThickness $border_thickness
+  FontColor $text_highlight
+  LineStyle plain
+}
+
+note {
+  BackgroundColor $bg_lighter
+  LineColor $secondary
+  FontColor $text_primary
+  RoundCorner $border_radius
+}
+
+' ============== SPECIAL ELEMENTS ===============
+title {
+  LineColor $accent_cyan
+  FontColor $primary_light
+  FontSize $font_title_size
+  FontStyle bold
+  Margin 15
+}
+
+legend {
+  BackgroundColor $bg_light
+  LineColor $secondary
+  RoundCorner $border_radius
+}
+
+legendTitle {
+  FontColor $accent_pink
+  FontSize $font_large
+  FontStyle bold
+}
+
+' ============= DIAGRAM-SPECIFIC STYLES =========
+.arrowBase {
+  LineColor $primary
+  LineThickness 2
+}
+
+.arrowInclude {
+  LineColor $accent_cyan
+  LineStyle dashed
+}
+
+.arrowExtend {
+  LineColor $accent_pink
+  LineStyle dotted
+}
+
+activityStart, activityEnd, activityStop {
+  BackgroundColor $secondary_dark
+  LineColor $accent_pink
+  FontColor $text_highlight
+  FontStyle bold
+}
+
+
+</style>
+' ============ CYBERPUNK GLOW EFFECTS ===========
+skinparam Arrow {
+  FontStyle {
+    highlight bold
+    warning bold,underline
+  }
+  FontColor {
+    highlight $accent_cyan
+    warning $accent_pink
+  }
+}
+@enduml
