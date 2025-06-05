@@ -1,0 +1,74 @@
+# Entorno virtual (ajusta el nombre si es distinto)
+venv/
+env/
+*venv/
+*venv
+
+# Archivos de configuración de entorno
+.env
+*.env
+
+# Archivos compilados de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de logs
+*.log
+
+# Base de datos SQLite (si la usas localmente)
+*.sqlite3
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de migraciones innecesarios (opcional — cuidado si usas Git para controlar migraciones)
+**/migrations/*.pyc
+**/migrations/__pycache__/
+# Si quieres ignorar todas las migraciones excepto __init__.py, descomenta:
+# **/migrations/*.py
+# !**/migrations/__init__.py
+
+# Archivos de cache de Django
+**/*.cache
+
+# Archivos de coverage y testing
+htmlcov/
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+
+# Archivos de configuración de editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Static files recopilados por collectstatic
+staticfiles/
+static/
+
+# Media subida localmente
+media/
+
+# Archivos de builds temporales
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Archivos de docker (si los tienes)
+*.pid
+
+
+# Archivos de pipenv (si algún colaborador usa)
+Pipfile.lock
+
+# Archivos de seguridad o backups
+*.bak
+*.old
+*.orig
+*.swp
+*.swo
