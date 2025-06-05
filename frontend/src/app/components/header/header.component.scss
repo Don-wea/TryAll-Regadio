@@ -1,0 +1,53 @@
+/* header.component.scss */
+$app-header-bg: white;    // Usando una variable para el fondo
+$app-link-color: black;  // Color para los enlaces
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: $app-header-bg;
+  color: $app-link-color;
+
+  .logo img {
+    height: 40px;
+  }
+
+  .nav-links {
+    ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+
+    a {
+      color: $app-link-color;
+      text-decoration: none;
+      transition: color 0.3s;
+
+      &.active {
+        font-weight: bold;
+      }
+
+      &:hover {
+        color: #00aaff; // Cambia el color al pasar el mouse
+      }
+    }
+  }
+
+  .user-actions {
+    button {
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #005f73;
+      }
+    }
+  }
+}
