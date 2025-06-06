@@ -11,7 +11,7 @@ $app-link-color: black;  // Color para los enlaces
   color: $app-link-color;
 
   .logo img {
-    height: 40px;
+    height: 6rem;
   }
 
   .nav-links {
@@ -33,6 +33,20 @@ $app-link-color: black;  // Color para los enlaces
       &:hover {
         color: #00aaff; // Cambia el color al pasar el mouse
       }
+    }
+
+    mat-chip-set {
+      .mat-mdc-chip {
+        height: 3rem;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+      }
+
+      .mat-mdc-chip-avatar {
+          width: 2.5rem;
+          height: 2.5rem;
+
+        }
     }
   }
 
