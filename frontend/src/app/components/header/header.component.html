@@ -1,6 +1,9 @@
 <!-- header.component.html -->
 <header class="app-header">
   <div class="logo">
+    <button mat-icon-button (click)="toggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
     <img src="../assets/TryAllLogo.jpg" alt="TryAll Logo">
   </div>
   <nav class="nav-links">
@@ -17,6 +20,4 @@
       </mat-chip-set></li>
     </ul>
   </nav>
-  
 </header>
- 

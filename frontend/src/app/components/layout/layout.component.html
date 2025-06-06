@@ -1,0 +1,19 @@
+<div>
+    <app-header (toggleSidenavEvent)="drawer.toggle()"></app-header>
+  
+    <mat-drawer-container class="sidenav-container" autosize>
+      <mat-drawer #drawer class="sidenav" mode="over" opened>
+        <mat-nav-list>
+          <a mat-list-item routerLink="/home">Home</a>
+          <a mat-list-item routerLink="/about">About</a>
+          <a mat-list-item routerLink="/contact">Contact</a>
+        </mat-nav-list>
+      </mat-drawer>
+  
+      <mat-drawer-content>
+        <div>
+            <ng-content></ng-content>
+        </div>
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </div>
