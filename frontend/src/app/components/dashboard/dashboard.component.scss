@@ -1,0 +1,13 @@
+$app-dashboard-bg: #548CB4;  // Puedes cambiar este color por el que prefieras
+
+:host {
+    display: block;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+.body {
+    background-color: $app-dashboard-bg;
+    color: black;
+}
+
