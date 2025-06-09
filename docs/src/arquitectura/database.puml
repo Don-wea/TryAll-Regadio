@@ -1,0 +1,122 @@
+@startuml
+
+!include style/midnight-cyber.puml
+
+title 📊 Base de Datos No Relacional para Sistema de Riego
+
+
+' Definimos zonas conceptuales
+package "📁 Configuración & Arquitectura" {
+    
+    entity Usuario {
+        +_id : ObjectId
+        +nombre_usuario : string
+        +nombre : string
+        +email : string
+        +password_hash : string
+        +rol : string
+        +fecha_registro : datetime
+    }
+
+    entity ZonaRiego {
+        +_id : ObjectId
+        ' +usuario_id : ObjectId
+        +nombre : string
+        +ubicacion : Doc
+        +fecha_creacion : datetime
+    }
+
+
+
+    entity Nodo {
+        +_id : ObjectId
+        +zona_id : ObjectId
+        +nombre : string
+        +descripcion : string
+        +coordenadas : GeoPoint
+    }
+
+    entity Sensor {
+        +_id : ObjectId
+        +nodo_id : ObjectId
+        +tipo : string
+        +modelo : string
+        +descripcion : string
+    }
+
+    entity Regador {
+        +_id : ObjectId
+        +nodo_id : ObjectId
+        +modelo : string
+        +descripcion : string
+    }
+
+    entity ConfiguracionRiego {
+        +_id : ObjectId
+        +zona_id : ObjectId
+        +programacion : array
+    }
+
+    entity ProgramacionDia {
+        +dia : string
+        +hora_inicio : string
+        +duracion_minutos : int
+        +humedad_objetivo : float
+        +ph_minimo : float
+        +ph_maximo : float
+        +temperatura_maxima : float
+    }
+
+    entity Sugerencia {
+        +_id : ObjectId
+        +zona_id : ObjectId
+        +fecha : datetime
+        +mensaje : string
+        +impacto : enum
+    }
+
+    ' Relaciones entre entidades estables
+    ' Usuario "1" -- "0..*" ZonaRiego
+    ZonaRiego "1" -- "0..*" Nodo
+    Nodo "1" -- "0..*" Sensor
+    Nodo "1" -- "0..*" Regador
+    ZonaRiego "1" -- "0..*" ConfiguracionRiego
+    ZonaRiego "1" -- "0..*" Sugerencia
+}
+
+' Zona de datos dinámicos / históricos
+package "📈 Datos Históricos IoT" {
+
+    entity LecturaSensor {
+        +_id : ObjectId
+        +sensor_id : ObjectId
+        +nodo_id : ObjectId
+        +zona_id : ObjectId
+        +tipo : string
+        +valor : float
+        +unidad : string
+        +fecha_hora : datetime
+    }
+
+    entity RegistroRiego {
+        +_id : ObjectId
+        +regador_id : ObjectId
+        +nodo_id : ObjectId
+        +zona_id : ObjectId
+        +cantidad_agua_litros : float
+        +energia_consumida_kwh : float
+        +duracion_segundos : int
+        +fecha_hora_inicio : datetime
+        +fecha_hora_fin : datetime
+    }
+
+    ' Relaciones dinámicas con entidades estables
+    Sensor "1" -- "0..*" LecturaSensor
+    Regador "1" -- "0..*" RegistroRiego
+    Nodo "1" -- "0..*" LecturaSensor
+    Nodo "1" -- "0..*" RegistroRiego
+    ConfiguracionRiego "1" -- "0..*" ProgramacionDia
+}
+
+
+@enduml

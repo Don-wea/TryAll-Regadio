@@ -46,7 +46,7 @@ skinparam Handwritten false
 
 ' ================ GLOBAL CONFIG ================
 root {
-  BackgroundColor $bg_dark
+  BackgroundColor transparent
   LineColor $primary
   FontName $font_main
   FontSize $font_medium
