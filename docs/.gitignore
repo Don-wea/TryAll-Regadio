@@ -1,0 +1,18 @@
+# latex compiled files
+*.aux
+*.bbl
+*.blg
+*.bmf
+*.glo
+*.gls
+*.ist
+*.lof
+*.lot
+*.out
+*.toc
+*.pdf
+*.pdf_tex
+*.pdf.gz
+*.pdf.gz_tex
+*.pdf_tex.gz
+
