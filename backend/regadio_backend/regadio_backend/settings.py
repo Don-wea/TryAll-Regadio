@@ -11,6 +11,19 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import mongoengine
+
+# Conexión a MongoDB
+MONGODB_HOST = 'localhost'
+MONGODB_PORT = 27017
+MONGODB_NAME = 'regadio_db'
+
+# Establece la conexión
+mongoengine.connect(
+    db=MONGODB_NAME,
+    host=MONGODB_HOST,
+    port=MONGODB_PORT
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'riego_api',
 ]
 
 MIDDLEWARE = [
