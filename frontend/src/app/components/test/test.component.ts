@@ -9,8 +9,8 @@ import { SensorService } from '../../services/sensor.service';
 })
 export class TESTComponent {
 
-  sensor: any = [];
-  datoTiempoReal = ""
+  datoTiempoReal = "";
+  porcentajeTiempoReal = "";
 
   constructor(private sensorService: SensorService) { }
 
@@ -18,6 +18,8 @@ export class TESTComponent {
     setInterval(() => {
       this.sensorService.getHumedadActual().subscribe((data: any) => {
         this.datoTiempoReal = data.humedad;
+        const raw = parseInt(this.datoTiempoReal);
+        this.porcentajeTiempoReal = ((raw / 4095) * 100).toFixed(2) + '%';
       });
     }, 1000); // cada segundo
   }
@@ -25,7 +27,9 @@ export class TESTComponent {
 
   humedadTiempoReal() {
     this.sensorService.getHumedadActual().subscribe((data: any) => {
-      this.datoTiempoReal = data.humedad; // <-- aquí se actualiza con la respuesta real
+      this.datoTiempoReal = data.humedad;
+      const raw = parseInt(this.datoTiempoReal);
+      this.porcentajeTiempoReal = ((raw / 4095) * 100).toFixed(2) + '%';
     });
   }
 }

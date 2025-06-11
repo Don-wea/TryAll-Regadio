@@ -3,72 +3,130 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import ZonaRiego, LecturaSensor, Nodo, Sensor, Humedad
 from .serializers import ZonaRiegoSerializer, LecturaSensorSerializer, NodoSerializer, SensorSerializer, HumedadSerializer
+from .repository import DataRepository
+import os
+import json
 
+IS_TEST_MODE = os.getenv("MODO_TEST", "false").lower() in ("true", "1", "yes")
+print("[DEBUG] MODO_TEST:", IS_TEST_MODE)
+
+def load_fake_data():
+    with open("fakedata.json", encoding="utf-8") as f:
+        return json.load(f)
+
+def get_fake_by_id(json_key, id):
+    data = load_fake_data()
+    for obj in data[json_key]:
+        if str(obj.get("id")) == str(id):
+            return obj
+    return None
 
 @api_view(['GET'])
 def lista_zonas(request):
-    """Obtener todas las zonas de riego"""
-    zonas = ZonaRiego.objects.all()
-    serializer = ZonaRiegoSerializer(zonas, many=True)
+    if IS_TEST_MODE:
+        data = load_fake_data()
+        return Response(data["zonas_riego"])
+    
+    objetos = DataRepository.get_all(ZonaRiego)
+    serializer = ZonaRiegoSerializer(objetos, many=True)
     return Response(serializer.data)
-
 
 @api_view(['GET'])
 def detalle_zona(request, zona_id):
-    """Obtener una zona específica por ID"""
+    if IS_TEST_MODE:
+        zona = get_fake_by_id("zonas_riego", zona_id)
+        if not zona:
+            return Response({"error": "Zona no encontrada"}, status=404)
+        return Response(zona)
+
     try:
-        zona = ZonaRiego.objects.get(id=zona_id)
+        zona = DataRepository.get_by_id(ZonaRiego, zona_id)
+        if not zona:
+            raise ZonaRiego.DoesNotExist
         serializer = ZonaRiegoSerializer(zona)
         return Response(serializer.data)
     except ZonaRiego.DoesNotExist:
-        return Response({"error": "Zona no encontrada"}, status=status.HTTP_404_NOT_FOUND)
-
+        return Response({"error": "Zona no encontrada"}, status=404)
 
 @api_view(['GET'])
 def lecturas_por_zona(request, zona_id):
-    """Obtener todas las lecturas de sensores para una zona específica"""
+    if IS_TEST_MODE:
+        data = load_fake_data()
+        zona = get_fake_by_id("zonas_riego", zona_id)
+        if not zona:
+            return Response({"error": "Zona no encontrada"}, status=404)
+        nombre_zona = zona["nombre"]
+        lecturas = [l for l in data["lecturas_sensor"] if l["zona_id"] == nombre_zona]
+        return Response(lecturas)
+
     try:
-        # Verificar que la zona existe
-        zona = ZonaRiego.objects.get(id=zona_id)
-        
-        # Obtener lecturas donde zona_id coincide
-        lecturas = LecturaSensor.objects.filter(zona_id=zona)
+        zona = DataRepository.get_by_id(ZonaRiego, zona_id)
+        if not zona:
+            raise ZonaRiego.DoesNotExist
+        lecturas = DataRepository.filter(LecturaSensor, zona_id=zona)
         serializer = LecturaSensorSerializer(lecturas, many=True)
         return Response(serializer.data)
     except ZonaRiego.DoesNotExist:
         return Response({"error": "Zona no encontrada"}, status=status.HTTP_404_NOT_FOUND)
 
-
 @api_view(['GET'])
 def nodos_por_zona(request, zona_id):
-    """Obtener todos los nodos para una zona específica"""
+    if IS_TEST_MODE:
+        data = load_fake_data()
+        zona = get_fake_by_id("zonas_riego", zona_id)
+        if not zona:
+            return Response({"error": "Zona no encontrada"}, status=404)
+        nombre_zona = zona["nombre"]
+        nodos = [n for n in data["nodos"] if n["zona_id"] == nombre_zona]
+        return Response(nodos)
+
     try:
-        zona = ZonaRiego.objects.get(id=zona_id)
-        nodos = Nodo.objects.filter(zona_id=zona)
+        zona = DataRepository.get_by_id(ZonaRiego, zona_id)
+        if not zona:
+            raise ZonaRiego.DoesNotExist
+        nodos = DataRepository.filter(Nodo, zona_id=zona)
         serializer = NodoSerializer(nodos, many=True)
         return Response(serializer.data)
     except ZonaRiego.DoesNotExist:
         return Response({"error": "Zona no encontrada"}, status=status.HTTP_404_NOT_FOUND)
 
-
 @api_view(['GET'])
 def sensores_por_nodo(request, nodo_id):
-    """Obtener todos los sensores para un nodo específico"""
+    if IS_TEST_MODE:
+        data = load_fake_data()
+        nodo = get_fake_by_id("nodos", nodo_id)
+        if not nodo:
+            return Response({"error": "Nodo no encontrado"}, status=404)
+        nombre_nodo = nodo["nombre"]
+        sensores = [s for s in data["sensores"] if s["nodo_id"] == nombre_nodo]
+        return Response(sensores)
+
     try:
-        nodo = Nodo.objects.get(id=nodo_id)
-        sensores = Sensor.objects.filter(nodo_id=nodo)
+        nodo = DataRepository.get_by_id(Nodo, nodo_id)
+        if not nodo:
+            raise Nodo.DoesNotExist
+        sensores = DataRepository.filter(Sensor, nodo_id=nodo)
         serializer = SensorSerializer(sensores, many=True)
         return Response(serializer.data)
     except Nodo.DoesNotExist:
         return Response({"error": "Nodo no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
-
 @api_view(['GET'])
 def lecturas_por_sensor(request, sensor_id):
-    """Obtener todas las lecturas para un sensor específico"""
+    if IS_TEST_MODE:
+        data = load_fake_data()
+        sensor = get_fake_by_id("sensores", sensor_id)
+        if not sensor:
+            return Response({"error": "Sensor no encontrado"}, status=404)
+        tipo_sensor = sensor["tipo"]
+        lecturas = [l for l in data["lecturas_sensor"] if l["sensor_id"] == tipo_sensor]
+        return Response(lecturas)
+
     try:
-        sensor = Sensor.objects.get(id=sensor_id)
-        lecturas = LecturaSensor.objects.filter(sensor_id=sensor)
+        sensor = DataRepository.get_by_id(Sensor, sensor_id)
+        if not sensor:
+            raise Sensor.DoesNotExist
+        lecturas = DataRepository.filter(LecturaSensor, sensor_id=sensor)
         serializer = LecturaSensorSerializer(lecturas, many=True)
         return Response(serializer.data)
     except Sensor.DoesNotExist:
