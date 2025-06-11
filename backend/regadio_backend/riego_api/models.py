@@ -65,7 +65,6 @@ class ZonaRiego(Document):
         return self.nombre
 
 class Nodo(Document):
-    _id = ObjectIdField()
     zona_id = ReferenceField(ZonaRiego, required=True)
     nombre = StringField(required=True, max_length=100)
     descripcion = StringField()
@@ -79,7 +78,6 @@ class Nodo(Document):
         return f"{self.nombre}"
 
 class Sensor(Document):
-    _id = ObjectIdField()
     nodo_id = ReferenceField(Nodo, required=True)
     tipo = StringField(required=True, choices=TipoSensor)
     modelo = StringField()
@@ -93,7 +91,6 @@ class Sensor(Document):
         return f"{self.tipo} en {self.nodo_id.nombre}"
 
 class LecturaSensor(Document):
-    _id = ObjectIdField()
     sensor_id = ReferenceField(Sensor, required=True)
     nodo_id = ReferenceField(Nodo, required=True)
     zona_id = ReferenceField(ZonaRiego, required=True)
@@ -112,7 +109,6 @@ class LecturaSensor(Document):
         return f"{self.sensor_id.tipo}: {self.valor} {self.unidad}"
 
 class Sugerencia(Document):
-    _id = ObjectIdField()
     zona_id = ReferenceField(ZonaRiego, required=True)
     fecha = DateTimeField(default=lambda: datetime.now(timezone.utc))
     mensaje = StringField(required=True)
@@ -135,7 +131,6 @@ class ProgramacionDia(EmbeddedDocument):
     temperatura_maxima = FloatField()
 
 class ConfiguracionRiego(Document):
-    _id = ObjectIdField()
     zona_id = ReferenceField(ZonaRiego, required=True, unique=True)
     programacion = ListField(EmbeddedDocumentField(ProgramacionDia))
 
@@ -147,7 +142,6 @@ class ConfiguracionRiego(Document):
         return f"Configuración para {self.zona_id.nombre}"
 
 class Regador(Document):
-    _id = ObjectIdField()
     nodo_id = ReferenceField(Nodo, required=True)
     modelo = StringField()
     descripcion = StringField()
@@ -160,7 +154,6 @@ class Regador(Document):
         return f"Regador en {self.nodo_id.nombre}"
 
 class RegistroRiego(Document):
-    _id = ObjectIdField()
     regador_id = ReferenceField(Regador, required=True)
     nodo_id = ReferenceField(Nodo, required=True)
     zona_id = ReferenceField(ZonaRiego, required=True)

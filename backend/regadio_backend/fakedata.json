@@ -1,6 +1,7 @@
 {
     "usuarios": [
       {
+        "id": 1,
         "nombre_usuario": "maria_gardens",
         "nombre": "María Pérez",
         "email": "maria.perez@example.com",
@@ -11,6 +12,7 @@
     ],
     "zonas_riego": [
       {
+        "id": 1,
         "nombre": "Huerto Principal",
         "ubicacion": "Sector norte del jardín",
         "fecha_creacion": "2025-06-10T12:05:00Z",
@@ -19,6 +21,7 @@
     ],
     "nodos": [
       {
+        "id": 1,
         "nombre": "Nodo Huerto 1",
         "descripcion": "Nodo central del huerto principal",
         "coordenadas": {"type": "Point", "coordinates": [-70.6483, -33.4569]},
@@ -27,6 +30,7 @@
     ],
     "sensores": [
       {
+        "id": 1,
         "tipo": "humedad_suelo",
         "modelo": "HS-200",
         "descripcion": "Sensor de humedad para suelos arcillosos",
