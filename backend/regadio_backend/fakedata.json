@@ -1,0 +1,117 @@
+{
+    "usuarios": [
+      {
+        "id": 1,
+        "nombre_usuario": "maria_gardens",
+        "nombre": "María Pérez",
+        "email": "maria.perez@example.com",
+        "password_hash": "hashedpassword123",
+        "rol": "usuario",
+        "fecha_registro": "2025-06-10T12:00:00Z"
+      }
+    ],
+    "zonas_riego": [
+      {
+        "id": 1,
+        "nombre": "Huerto Principal",
+        "ubicacion": "Sector norte del jardín",
+        "fecha_creacion": "2025-06-10T12:05:00Z",
+        "usuario": "maria_gardens"
+      }
+    ],
+    "nodos": [
+      {
+        "id": 1,
+        "nombre": "Nodo Huerto 1",
+        "descripcion": "Nodo central del huerto principal",
+        "coordenadas": {"type": "Point", "coordinates": [-70.6483, -33.4569]},
+        "zona_id": "Huerto Principal"
+      }
+    ],
+    "sensores": [
+      {
+        "id": 1,
+        "tipo": "humedad_suelo",
+        "modelo": "HS-200",
+        "descripcion": "Sensor de humedad para suelos arcillosos",
+        "nodo_id": "Nodo Huerto 1"
+      },
+      {
+        "tipo": "temperatura",
+        "modelo": "TMP-01",
+        "descripcion": "Sensor de temperatura ambiental",
+        "nodo_id": "Nodo Huerto 1"
+      }
+    ],
+    "lecturas_sensor": [
+      {
+        "sensor_id": "HS-200",
+        "nodo_id": "Nodo Huerto 1",
+        "zona_id": "Huerto Principal",
+        "valor": 34.5,
+        "unidad": "%",
+        "fecha_hora": "2025-06-10T12:30:00Z"
+      },
+      {
+        "sensor_id": "TMP-01",
+        "nodo_id": "Nodo Huerto 1",
+        "zona_id": "Huerto Principal",
+        "valor": 22.7,
+        "unidad": "°C",
+        "fecha_hora": "2025-06-10T12:32:00Z"
+      }
+    ],
+    "sugerencias": [
+      {
+        "zona_id": "Huerto Principal",
+        "fecha": "2025-06-10T12:45:00Z",
+        "mensaje": "Aumentar riego debido a baja humedad detectada.",
+        "impacto": "alto"
+      }
+    ],
+    "configuraciones_riego": [
+      {
+        "zona_id": "Huerto Principal",
+        "programacion": [
+          {
+            "dia": "lunes",
+            "hora_inicio": "07:00",
+            "duracion_minutos": 30,
+            "humedad_objetivo": 40.0,
+            "ph_minimo": 6.0,
+            "ph_maximo": 7.5,
+            "temperatura_maxima": 30.0
+          },
+          {
+            "dia": "jueves",
+            "hora_inicio": "07:00",
+            "duracion_minutos": 25,
+            "humedad_objetivo": 38.0,
+            "ph_minimo": 6.2,
+            "ph_maximo": 7.4,
+            "temperatura_maxima": 29.0
+          }
+        ]
+      }
+    ],
+    "regadores": [
+      {
+        "nodo_id": "Nodo Huerto 1",
+        "modelo": "GOT-3000",
+        "descripcion": "Sistema de goteo de precisión"
+      }
+    ],
+    "registros_riego": [
+      {
+        "regador_id": "GOT-3000",
+        "nodo_id": "Nodo Huerto 1",
+        "zona_id": "Huerto Principal",
+        "cantidad_agua_litros": 15.2,
+        "energia_consumida_kwh": 0.05,
+        "duracion_segundos": 1800,
+        "fecha_hora_inicio": "2025-06-10T07:00:00Z",
+        "fecha_hora_fin": "2025-06-10T07:30:00Z"
+      }
+    ]
+  }
+  
