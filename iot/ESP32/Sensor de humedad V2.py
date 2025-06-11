@@ -4,8 +4,8 @@ import time
 from machine import ADC, Pin
 
 # --- Configuración Wi-Fi ---
-SSID = 'Dpto 601'
-PASSWORD = '94434657'
+SSID = 'WIFI'
+PASSWORD = 'Contraseña'
 
 # --- Configuración sensor HW-481 ---
 sensor = ADC(Pin(34))
