@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import ZonaRiego, LecturaSensor, Nodo, Sensor
-from .serializers import ZonaRiegoSerializer, LecturaSensorSerializer, NodoSerializer, SensorSerializer
+from .models import ZonaRiego, LecturaSensor, Nodo, Sensor, Humedad
+from .serializers import ZonaRiegoSerializer, LecturaSensorSerializer, NodoSerializer, SensorSerializer, HumedadSerializer
 
 
 @api_view(['GET'])
@@ -73,3 +73,25 @@ def lecturas_por_sensor(request, sensor_id):
         return Response(serializer.data)
     except Sensor.DoesNotExist:
         return Response({"error": "Sensor no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+
+ultimos_valores = []  # Lista temporal mientras no uses MongoDB
+
+@api_view(['POST'])
+def registrar_humedad(request):
+    humedad = request.data.get("humedad", 0)
+    ultimos_valores.append(humedad)
+    if len(ultimos_valores) > 20:
+        ultimos_valores.pop(0)  # Guarda solo los últimos 20 valores
+    return Response({"mensaje": "Dato recibido"}, status=200)
+
+@api_view(['GET'])
+def obtener_humedad(request):
+    return Response({"humedad": ultimos_valores[-1] if ultimos_valores else 0})
+
+
+@api_view(['GET'])
+def humedad_ultima(request):
+    ultimo = Humedad.objects.last()
+    serializer = HumedadSerializer(ultimo)
+    return Response(serializer.data)

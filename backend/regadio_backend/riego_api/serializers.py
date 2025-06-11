@@ -1,5 +1,5 @@
 from rest_framework_mongoengine import serializers
-from .models import ZonaRiego, LecturaSensor, Nodo, Sensor
+from .models import ZonaRiego, LecturaSensor, Nodo, Sensor, Humedad
 
 
 class ZonaRiegoSerializer(serializers.DocumentSerializer):
@@ -23,4 +23,10 @@ class SensorSerializer(serializers.DocumentSerializer):
 class LecturaSensorSerializer(serializers.DocumentSerializer):
     class Meta:
         model = LecturaSensor
+        fields = '__all__'
+
+
+class HumedadSerializer(serializers.DocumentSerializer):
+    class Meta:
+        model = Humedad
         fields = '__all__'
