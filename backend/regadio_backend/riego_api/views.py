@@ -7,23 +7,15 @@ from .repository import DataRepository
 import os
 import json
 
-
 IS_TEST_MODE = os.getenv("MODO_TEST", "false").lower() in ("true", "1", "yes")
 print("[DEBUG] MODO_TEST:", IS_TEST_MODE)
 
-def return_fake_or_real(model_class, serializer_class, json_key):
-    if IS_TEST_MODE:
-        with open("fakedata.json", encoding="utf-8") as f:
-            data = json.load(f)
-        return Response(data[json_key])
-
-    objetos = DataRepository.get_all(model_class)
-    serializer = serializer_class(objetos, many=True)
-    return Response(serializer.data)
+def load_fake_data():
+    with open("fakedata.json", encoding="utf-8") as f:
+        return json.load(f)
 
 def get_fake_by_id(json_key, id):
-    with open("fakedata.json", encoding="utf-8") as f:
-        data = json.load(f)
+    data = load_fake_data()
     for obj in data[json_key]:
         if str(obj.get("id")) == str(id):
             return obj
@@ -31,12 +23,17 @@ def get_fake_by_id(json_key, id):
 
 @api_view(['GET'])
 def lista_zonas(request):
-    return return_fake_or_real(ZonaRiego, ZonaRiegoSerializer, "zonas_riego")
+    if IS_TEST_MODE:
+        data = load_fake_data()
+        return Response(data["zonas_riego"])
+    
+    objetos = DataRepository.get_all(ZonaRiego)
+    serializer = ZonaRiegoSerializer(objetos, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def detalle_zona(request, zona_id):
     if IS_TEST_MODE:
-        print("[DEBUG] Buscando zona en modo test con ID:", zona_id)
         zona = get_fake_by_id("zonas_riego", zona_id)
         if not zona:
             return Response({"error": "Zona no encontrada"}, status=404)
@@ -53,6 +50,15 @@ def detalle_zona(request, zona_id):
 
 @api_view(['GET'])
 def lecturas_por_zona(request, zona_id):
+    if IS_TEST_MODE:
+        data = load_fake_data()
+        zona = get_fake_by_id("zonas_riego", zona_id)
+        if not zona:
+            return Response({"error": "Zona no encontrada"}, status=404)
+        nombre_zona = zona["nombre"]
+        lecturas = [l for l in data["lecturas_sensor"] if l["zona_id"] == nombre_zona]
+        return Response(lecturas)
+
     try:
         zona = DataRepository.get_by_id(ZonaRiego, zona_id)
         if not zona:
@@ -65,6 +71,15 @@ def lecturas_por_zona(request, zona_id):
 
 @api_view(['GET'])
 def nodos_por_zona(request, zona_id):
+    if IS_TEST_MODE:
+        data = load_fake_data()
+        zona = get_fake_by_id("zonas_riego", zona_id)
+        if not zona:
+            return Response({"error": "Zona no encontrada"}, status=404)
+        nombre_zona = zona["nombre"]
+        nodos = [n for n in data["nodos"] if n["zona_id"] == nombre_zona]
+        return Response(nodos)
+
     try:
         zona = DataRepository.get_by_id(ZonaRiego, zona_id)
         if not zona:
@@ -77,6 +92,15 @@ def nodos_por_zona(request, zona_id):
 
 @api_view(['GET'])
 def sensores_por_nodo(request, nodo_id):
+    if IS_TEST_MODE:
+        data = load_fake_data()
+        nodo = get_fake_by_id("nodos", nodo_id)
+        if not nodo:
+            return Response({"error": "Nodo no encontrado"}, status=404)
+        nombre_nodo = nodo["nombre"]
+        sensores = [s for s in data["sensores"] if s["nodo_id"] == nombre_nodo]
+        return Response(sensores)
+
     try:
         nodo = DataRepository.get_by_id(Nodo, nodo_id)
         if not nodo:
@@ -89,6 +113,15 @@ def sensores_por_nodo(request, nodo_id):
 
 @api_view(['GET'])
 def lecturas_por_sensor(request, sensor_id):
+    if IS_TEST_MODE:
+        data = load_fake_data()
+        sensor = get_fake_by_id("sensores", sensor_id)
+        if not sensor:
+            return Response({"error": "Sensor no encontrado"}, status=404)
+        tipo_sensor = sensor["tipo"]
+        lecturas = [l for l in data["lecturas_sensor"] if l["sensor_id"] == tipo_sensor]
+        return Response(lecturas)
+
     try:
         sensor = DataRepository.get_by_id(Sensor, sensor_id)
         if not sensor:
