@@ -17,6 +17,13 @@
         "ubicacion": "Sector norte del jardín",
         "fecha_creacion": "2025-06-10T12:05:00Z",
         "usuario": "maria_gardens"
+      },
+      {
+        "id": 2,
+        "nombre": "Huerto Secundario",
+        "ubicacion": "Sector sur del jardín",
+        "fecha_creacion": "2025-06-10T12:08:00Z",
+        "usuario": "maria_gardens"
       }
     ],
     "nodos": [
@@ -26,6 +33,20 @@
         "descripcion": "Nodo central del huerto principal",
         "coordenadas": {"type": "Point", "coordinates": [-70.6483, -33.4569]},
         "zona_id": "Huerto Principal"
+      },
+      {
+        "id": 2,
+        "nombre": "Nodo Huerto 2",
+        "descripcion": "Nodo secundario del huerto principal",
+        "coordenadas": {"type": "Point", "coordinates": [-70.6485, -33.4571]},
+        "zona_id": "Huerto Principal"
+      },
+      {
+        "id": 3,
+        "nombre": "Nodo Huerto 3",
+        "descripcion": "Nodo central del huerto secundario",
+        "coordenadas": {"type": "Point", "coordinates": [-70.6487, -33.4573]},
+        "zona_id": "Huerto Secundario"
       }
     ],
     "sensores": [
@@ -42,6 +63,20 @@
         "modelo": "TMP-01",
         "descripcion": "Sensor de temperatura ambiental",
         "nodo_id": "Nodo Huerto 1"
+      },
+      {
+        "id": 3,
+        "tipo": "ph",
+        "modelo": "PH-01",
+        "descripcion": "Sensor de pH para la calidad del agua",
+        "nodo_id": "Nodo Huerto 1"
+      },
+      {
+        "id": 4,
+        "tipo": "humedad_suelo",
+        "modelo": "HS-200",
+        "descripcion": "Sensor de humedad para suelos arcillosos",
+        "nodo_id": "Nodo Huerto 3"
       }
     ],
     "lecturas_sensor": [
@@ -62,6 +97,24 @@
         "valor": 22.7,
         "unidad": "°C",
         "fecha_hora": "2025-06-10T12:32:00Z"
+      },
+      {
+        "id": 3,
+        "sensor_id": "PH-01",
+        "nodo_id": "Nodo Huerto 1",
+        "zona_id": "Huerto Principal",
+        "valor": 6.8,
+        "unidad": "",
+        "fecha_hora": "2025-06-10T12:35:00Z"
+      },
+      {
+        "id": 4,
+        "sensor_id": "HS-200",
+        "nodo_id": "Nodo Huerto 3",
+        "zona_id": "Huerto Secundario",
+        "valor": 32.0,
+        "unidad": "%",
+        "fecha_hora": "2025-06-10T12:40:00Z"
       }
     ],
     "sugerencias": [
