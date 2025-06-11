@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import mongoengine
+import os
 
 # Conexión a MongoDB
 MONGODB_HOST = 'localhost'
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'rest_framework_mongoengine',
     'riego_api',
 ]
 
@@ -148,3 +150,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MODO_TEST = os.getenv("MODO_TEST") == "1"

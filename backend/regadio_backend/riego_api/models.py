@@ -2,7 +2,7 @@ from mongoengine import Document, EmbeddedDocument, EmbeddedDocumentField
 from mongoengine import StringField, EmailField, DateTimeField, ReferenceField, FloatField
 from mongoengine import IntField, BooleanField, ListField, PointField, EnumField
 from mongoengine import ObjectIdField
-from datetime import datetime
+from datetime import datetime, timezone
 import enum
 
 # Enumeraciones
@@ -42,7 +42,7 @@ class Usuario(Document):
     email = EmailField(required=True, unique=True)
     password_hash = StringField(required=True)
     rol = StringField(required=True, choices=['admin', 'usuario'], default='usuario')
-    fecha_registro = DateTimeField(default=datetime.utc)
+    fecha_registro = DateTimeField(default=lambda: datetime.now(timezone.utc))
 
     meta = {
         'collection': 'usuarios'
@@ -54,7 +54,7 @@ class Usuario(Document):
 class ZonaRiego(Document):
     nombre = StringField(required=True, max_length=100)
     ubicacion = StringField()
-    fecha_creacion = DateTimeField(default=datetime.utcnow)
+    fecha_creacion = DateTimeField(default=lambda: datetime.now(timezone.utc))
     usuario = ReferenceField(Usuario, required=True)
 
     meta = {
@@ -99,7 +99,7 @@ class LecturaSensor(Document):
     zona_id = ReferenceField(ZonaRiego, required=True)
     valor = FloatField(required=True)
     unidad = StringField()
-    fecha_hora = DateTimeField(default=datetime.utcnow)
+    fecha_hora = DateTimeField(default=lambda: datetime.now(timezone.utc))
 
     meta = {
         'collection': 'lecturas_sensor',
@@ -114,7 +114,7 @@ class LecturaSensor(Document):
 class Sugerencia(Document):
     _id = ObjectIdField()
     zona_id = ReferenceField(ZonaRiego, required=True)
-    fecha = DateTimeField(default=datetime.utc)
+    fecha = DateTimeField(default=lambda: datetime.now(timezone.utc))
     mensaje = StringField(required=True)
     impacto = EnumField(Impacto, default=Impacto.MEDIO)
 
