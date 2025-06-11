@@ -1,0 +1,14 @@
+
+
+.map-container {
+  width: 500px;       /* fixed width */
+  height: 500px;      /* fixed height */
+  position: relative; /* needed for Leaflet */
+  border: 1px solid #ccc;
+  overflow: hidden;   /* prevent overflow outside container */
+}
+
+#map {
+  width: 100%;        /* fill container width */
+  height: 100%;       /* fill container height */
+}
