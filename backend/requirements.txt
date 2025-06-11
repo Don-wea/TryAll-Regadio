@@ -8,3 +8,6 @@ djangorestframework>=3.15.1  # si planean usar API REST
 python-decouple>=3.8      # alternativa para gestión de variables de entorno
 Pillow>=10.3.0            # para trabajar con imágenes
 django-cors-headers>=4.7.0  # para manejar CORS en Django
+mongoengine>=0.29.1       # para trabajar con MongoDB
+pymongo>=4.13.0          # para interactuar con MongoDB desde Python
+git+https://github.com/umutbozkurt/django-rest-framework-mongoengine.git#egg=django-rest-framework-mongoengine
