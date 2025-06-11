@@ -1,0 +1,290 @@
+// Variables de colores según la paleta proporcionada
+$color-principal: #548CB4;       // Azul principal/fondo
+$color-secundario: #A4DCFC;       // Azul secundario/acentos
+$color-botones: #3C5C74;         // Botones principales
+$color-titulos: #1A1A2E;         // Títulos principales e iconos
+$color-rechazar: #D93632;        // Botón rechazar/alerta
+$color-recomendacion: #D99632;   // Botón recomendación/advertencia
+$color-outline: #A2A2A5;         // Outline inputs
+$color-outline-active: #404040;   // Outline inputs activos
+
+.monitoreo-container {
+  font-family: Arial, sans-serif;
+  background-color: $color-principal;
+  color: white;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lecturas-container {
+    flex: 2;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    color: $color-titulos;
+    overflow-y: auto;
+    max-height: 600px;
+    
+    h2 {
+      color: $color-titulos;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    
+    .seccion {
+      margin-bottom: 30px;
+      
+      h3 {
+        color: $color-titulos;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding-bottom: 8px;
+        margin-bottom: 15px;
+      }
+    }
+    
+    .sin-datos {
+      color: $color-outline;
+      font-style: italic;
+      margin: 10px 0;
+    }
+    
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      
+      li {
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: rgba(84, 140, 180, 0.1);
+        border-radius: 5px;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+    
+    .mediciones-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 15px;
+    }
+    
+    .medicion-card {
+      background-color: rgba(84, 140, 180, 0.1);
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      
+      .medicion-tipo {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      
+      .medicion-valor {
+        font-size: 20px;
+        font-weight: bold;
+        color: $color-secundario;
+      }
+      
+      .medicion-fecha {
+        font-size: 12px;
+        margin-top: 5px;
+        color: $color-outline;
+      }
+    }
+  }
+
+.zona-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .nav-btn {
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0 20px;
+  }
+
+  .zona-selector {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 10px 40px;
+    border-radius: 5px;
+    min-width: 150px;
+    text-align: center;
+
+    span {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+}
+
+.content-container {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+}
+
+.map-container {
+  flex: 2;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.map-placeholder {
+  background-color: #E8F5E9;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.sensor-marker {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+.sensor-normal {
+  background-color: #2E7D32;
+}
+
+.sensor-warning {
+  background-color: $color-recomendacion;
+}
+
+.sensor-alert {
+  background-color: $color-rechazar;
+  &::before {
+    content: '!';
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.alertas-panel {
+  flex: 1;
+  background-color: $color-titulos;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  
+  h2 {
+    margin: 0 0 20px 0;
+    font-size: 22px;
+  }
+  
+  .sin-alertas {
+    text-align: center;
+    opacity: 0.7;
+    margin-top: 20px;
+  }
+  
+  .alerta-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+  }
+  
+  .alerta-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 15px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  
+  .alerta-danger {
+    background-color: $color-rechazar;
+  }
+  
+  .alerta-warning {
+    background-color: $color-recomendacion;
+  }
+  
+  .alerta-content {
+    flex-grow: 1;
+    
+    h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+    
+    p {
+      margin: 5px 0 0 0;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+    
+    .alerta-time {
+      font-size: 12px;
+    }
+  }
+}
+
+.mediciones-container {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  
+  h3 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+  }
+}
+
+.mediciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.medicion-card {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  
+  .medicion-valor {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .medicion-fecha {
+    font-size: 12px;
+    margin-top: 5px;
+    opacity: 0.7;
+  }
+}
