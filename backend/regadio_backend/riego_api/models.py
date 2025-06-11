@@ -3,7 +3,9 @@ from mongoengine import StringField, EmailField, DateTimeField, ReferenceField, 
 from mongoengine import IntField, BooleanField, ListField, PointField, EnumField
 from mongoengine import ObjectIdField
 from datetime import datetime, timezone
+from django.db import models
 import enum
+import datetime
 
 # Enumeraciones
 class Impacto(enum.Enum):
@@ -169,3 +171,8 @@ class RegistroRiego(Document):
 
     def __str__(self):
         return f"Riego en {self.zona_id.nombre} - {self.fecha_hora_inicio}"
+
+class Humedad(Document):
+    valor = FloatField(required=True)
+    timestamp = DateTimeField(default=datetime.datetime.utcnow)
+    sensor_id = StringField(required=True)

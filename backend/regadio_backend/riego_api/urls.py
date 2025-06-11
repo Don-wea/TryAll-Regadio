@@ -17,4 +17,8 @@ urlpatterns = [
     
     # Endpoints para lecturas por sensor
     path('sensores/<str:sensor_id>/lecturas/', views.lecturas_por_sensor, name='lecturas-por-sensor'),
+
+    path('api/humedad/', views.registrar_humedad, name='registrar_humedad'),
+
+    path("api/ultima_humedad/", views.obtener_humedad, name="obtener_humedad"),
 ]
