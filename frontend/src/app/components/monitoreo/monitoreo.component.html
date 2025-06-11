@@ -6,9 +6,9 @@
 
 <ul>
   <li *ngFor="let zona of zonas">
-    <strong>{{ zona.nombre }}</strong> (ID: {{ zona._id }})
-    <button (click)="verNodos(zona._id)">Ver Nodos</button>
-    <button (click)="verLecturasZona(zona._id)">Ver Lecturas</button>
+    <strong>{{ zona.nombre }}</strong> (ID: {{ zona.id }})
+    <button (click)="verNodos(zona.id)">Ver Nodos</button>
+    <button (click)="verLecturasZona(zona.id)">Ver Lecturas</button>
   </li>
 </ul>
 
@@ -17,8 +17,8 @@
   <h3>Nodos de la zona seleccionada</h3>
   <ul>
     <li *ngFor="let nodo of nodos">
-      {{ nodo.nombre }} (ID: {{ nodo._id }})
-      <button (click)="verSensores(nodo._id)">Ver Sensores</button>
+      {{ nodo.nombre }} (ID: {{ nodo.id }})
+      <button (click)="verSensores(nodo.id)">Ver Sensores</button>
     </li>
   </ul>
 </div>
@@ -28,8 +28,8 @@
   <h3>Sensores del nodo seleccionado</h3>
   <ul>
     <li *ngFor="let sensor of sensores">
-      {{ sensor.tipo }} (ID: {{ sensor._id }})
-      <button (click)="verLecturasSensor(sensor._id)">Ver Lecturas</button>
+      {{ sensor.tipo }} (ID: {{ sensor.id }})
+      <button (click)="verLecturasSensor(sensor.id)">Ver Lecturas</button>
     </li>
   </ul>
 </div>

@@ -37,6 +37,7 @@
         "nodo_id": "Nodo Huerto 1"
       },
       {
+        "id": 2,
         "tipo": "temperatura",
         "modelo": "TMP-01",
         "descripcion": "Sensor de temperatura ambiental",
@@ -45,6 +46,7 @@
     ],
     "lecturas_sensor": [
       {
+        "id": 1,
         "sensor_id": "HS-200",
         "nodo_id": "Nodo Huerto 1",
         "zona_id": "Huerto Principal",
@@ -53,6 +55,7 @@
         "fecha_hora": "2025-06-10T12:30:00Z"
       },
       {
+        "id": 2,
         "sensor_id": "TMP-01",
         "nodo_id": "Nodo Huerto 1",
         "zona_id": "Huerto Principal",
