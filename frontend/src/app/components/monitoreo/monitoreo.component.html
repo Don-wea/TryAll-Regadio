@@ -1,55 +1,71 @@
-<!-- HTML para probar si funciona bien el servicio -->
+<div class="monitoreo-container">
+  <!-- Navegación de Zona -->
+  <div class="zona-navigation">
+    <button class="nav-btn" (click)="cambiarZona('anterior')">&lt;</button>
+    <div class="zona-selector">
+      <span>Zona {{ zonaActual?.nombre || 1 }}</span>
+    </div>
+    <button class="nav-btn" (click)="cambiarZona('siguiente')">&gt;</button>
+  </div>
 
-<!-- Zonas -->
-<h2>Zonas</h2>
-<button (click)="cargarZonas()">Cargar Zonas</button>
+  <div class="content-container">
+    <!-- Sección de Datos de la Zona Actual -->
+    <div class="lecturas-container">
+      <!-- Información de la Zona Actual -->
+      <div class="zona-info" *ngIf="zonaActual">
+        <h2>Zona: {{ zonaActual.nombre }}</h2>
+        
+        <!-- Nodos de la Zona Actual -->
+        <div class="seccion">
+          <h3>Nodos</h3>
+          <div *ngIf="nodos.length === 0" class="sin-datos">No hay nodos en esta zona</div>
+          <ul *ngIf="nodos.length > 0">
+            <li *ngFor="let nodo of nodos">
+              <strong>{{ nodo.nombre }}</strong> (ID: {{ nodo.id }})
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Sensores de la Zona Actual -->
+        <div class="seccion">
+          <h3>Sensores</h3>
+          <div *ngIf="sensores.length === 0" class="sin-datos">No hay sensores en esta zona</div>
+          <ul *ngIf="sensores.length > 0">
+            <li *ngFor="let sensor of sensores">
+              <strong>{{ sensor.tipo }}</strong> (ID: {{ sensor.id }})
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Lecturas de la Zona Actual -->
+        <div class="seccion">
+          <h3>Mediciones</h3>
+          <div *ngIf="lecturasZona.length === 0" class="sin-datos">No hay mediciones disponibles</div>
+          <div *ngIf="lecturasZona.length > 0" class="mediciones-grid">
+            <div *ngFor="let lectura of lecturasZona" class="medicion-card">
+              <div class="medicion-tipo">{{ lectura.sensor_id.tipo }}</div>
+              <div class="medicion-valor">{{ lectura.valor }} {{ lectura.unidad }}</div>
+              <div class="medicion-fecha">{{ lectura.fecha_hora | date:'short' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<ul>
-  <li *ngFor="let zona of zonas">
-    <strong>{{ zona.nombre }}</strong> (ID: {{ zona.id }})
-    <button (click)="verNodos(zona.id)">Ver Nodos</button>
-    <button (click)="verLecturasZona(zona.id)">Ver Lecturas</button>
-  </li>
-</ul>
-
-<!-- Nodos -->
-<div *ngIf="nodos.length > 0">
-  <h3>Nodos de la zona seleccionada</h3>
-  <ul>
-    <li *ngFor="let nodo of nodos">
-      {{ nodo.nombre }} (ID: {{ nodo.id }})
-      <button (click)="verSensores(nodo.id)">Ver Sensores</button>
-    </li>
-  </ul>
-</div>
-
-<!-- Sensores -->
-<div *ngIf="sensores.length > 0">
-  <h3>Sensores del nodo seleccionado</h3>
-  <ul>
-    <li *ngFor="let sensor of sensores">
-      {{ sensor.tipo }} (ID: {{ sensor.id }})
-      <button (click)="verLecturasSensor(sensor.id)">Ver Lecturas</button>
-    </li>
-  </ul>
-</div>
-
-<!-- Lecturas de Zona -->
-<div *ngIf="lecturasZona.length > 0">
-  <h3>Lecturas de la zona</h3>
-  <ul>
-    <li *ngFor="let lectura of lecturasZona">
-      {{ lectura.sensor_id.tipo }}: {{ lectura.valor }} {{ lectura.unidad }} - {{ lectura.fecha_hora }}
-    </li>
-  </ul>
-</div>
-
-<!-- Lecturas de Sensor -->
-<div *ngIf="lecturasSensor.length > 0">
-  <h3>Lecturas del sensor</h3>
-  <ul>
-    <li *ngFor="let lectura of lecturasSensor">
-      {{ lectura.valor }} {{ lectura.unidad }} - {{ lectura.fecha_hora }}
-    </li>
-  </ul>
+    <!-- Panel de Alertas -->
+    <div class="alertas-panel">
+      <h2>Alertas</h2>
+      <div *ngIf="alertas.length === 0" class="sin-alertas">
+        No hay alertas activas
+      </div>
+      <div *ngFor="let alerta of alertas" class="alerta-item">
+        <div class="alerta-icon" [ngClass]="'alerta-' + alerta.tipo"></div>
+        <div class="alerta-content">
+          <h3>{{ alerta.titulo }}</h3>
+          <p>{{ alerta.zona }}</p>
+          <p class="alerta-time">{{ alerta.fecha }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
