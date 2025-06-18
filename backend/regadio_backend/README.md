@@ -1,8 +1,10 @@
-## Aplicar migraciones
-
+## Aplicar migraciones  
+```bash
 python manage.py migrate
+```
 
 
-## Arrancar servidor
-
+## Arrancar servidor  
+```bash
 python manage.py runserver
+```
