@@ -7,14 +7,14 @@ from .views import (
 
 router = routers.DefaultRouter()
 router.register(r'usuarios', UsuarioViewSet, basename='usuario')
-# router.register(r'zonas', ZonaRiegoViewSet)
-# router.register(r'nodos', NodoViewSet)
-# router.register(r'sensores', SensorViewSet)
-# router.register(r'regadores', RegadorViewSet)
-# router.register(r'configuraciones-riego', ConfiguracionRiegoViewSet)
-# router.register(r'sugerencias', SugerenciaViewSet)
-# router.register(r'lecturas', LecturaSensorViewSet)
-# router.register(r'registros-riego', RegistroRiegoViewSet)
+router.register(r'zonas', ZonaRiegoViewSet, basename='zona')
+router.register(r'nodos', NodoViewSet, basename='nodo')
+router.register(r'sensores', SensorViewSet, basename='sensor')
+router.register(r'regadores', RegadorViewSet, basename='regador')
+router.register(r'configuraciones-riego', ConfiguracionRiegoViewSet, basename='configuracion-riego')
+router.register(r'sugerencias', SugerenciaViewSet, basename='sugerencia')
+router.register(r'lecturas', LecturaSensorViewSet, basename='lectura')
+router.register(r'registros-riego', RegistroRiegoViewSet, basename='registro-riego')
 
 urlpatterns = [
     path('crud/', include(router.urls)),
