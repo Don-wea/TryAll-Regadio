@@ -9,27 +9,37 @@ import { SensorService } from '../../services/sensor.service';
 })
 export class TESTComponent {
 
-  datoTiempoReal = "";
-  porcentajeTiempoReal = "";
+  datoTemperaturaReal = "";
+  datoHumedadReal = "";
+  datoFlujoReal = "";
 
   constructor(private sensorService: SensorService) { }
 
   ngOnInit(): void {
+    // Llama a la función para actualizar datos cada segundo
     setInterval(() => {
-      this.sensorService.getHumedadActual().subscribe((data: any) => {
-        this.datoTiempoReal = data.humedad;
-        const raw = parseInt(this.datoTiempoReal);
-        this.porcentajeTiempoReal = ((raw / 4095) * 100).toFixed(2) + '%';
-      });
+      this.humedadTiempoReal();
+      this.temperaturatTiempoReal();
+      this.flujoTiempoReal();
     }, 1000); // cada segundo
   }
   
 
   humedadTiempoReal() {
     this.sensorService.getHumedadActual().subscribe((data: any) => {
-      this.datoTiempoReal = data.humedad;
-      const raw = parseInt(this.datoTiempoReal);
-      this.porcentajeTiempoReal = ((raw / 4095) * 100).toFixed(2) + '%';
+      this.datoHumedadReal = data.humedad;
+    });
+  }
+
+  temperaturatTiempoReal() {
+    this.sensorService.getTemperaturaActual().subscribe((data: any) => {
+      this.datoTemperaturaReal = data.temperatura;
+    });
+  }
+
+  flujoTiempoReal() {
+    this.sensorService.getFlujoActual().subscribe((data: any) => {
+      this.datoFlujoReal = data.flujo;
     });
   }
 }

@@ -1,6 +1,17 @@
 <p>test works!</p>
 
 <h1>SENSOR HUMEDAD:</h1>
-<h3>VALOR RAW: {{ datoTiempoReal }}</h3>
-<h3>PORCENTAJE: {{ porcentajeTiempoReal }}</h3>
-<button (click)="humedadTiempoReal()">Actualizar</button>
+<h3>VALOR RAW: {{ datoHumedadReal }}</h3>
+<h3>PORCENTAJE: {{ datoHumedadReal }}%</h3>
+
+<br>
+
+<h1>SENSOR TEMPERATURA:</h1>
+<h3>VALOR: {{ datoTemperaturaReal }}</h3>
+<h3>TEMPERATURA: {{ datoTemperaturaReal }} °C</h3>
+
+<br>
+
+<h1>SENSOR FLUJO:</h1>
+<h3>VALOR: {{ datoFlujoReal }}</h3>
+<h3>FLUJO: {{ datoFlujoReal }} L/s</h3>

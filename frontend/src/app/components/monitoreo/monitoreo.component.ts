@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
+import { SensorService } from '../../services/sensor.service';
 
 @Component({
   selector: 'app-monitoreo',
@@ -20,10 +21,45 @@ export class MonitoreoComponent implements OnInit {
   zonaActual: any = null;
   indiceZonaActual: number = 0;
 
-  constructor(private apiService: APIService) {}
+  datoTemperaturaReal = "";
+  datoHumedadReal = "";
+  datoFlujoReal = "";
+  idReal = "";
+
+  constructor(private sensorService: SensorService, private apiService: APIService) {}
 
   ngOnInit() {
     this.cargarZonas();
+    setInterval(() => {
+      this.humedadTiempoReal();
+      this.temperaturatTiempoReal();
+      this.flujoTiempoReal();
+      this.idTiempoReal();
+    }, 1000); // cada segundo
+  }
+
+  idTiempoReal() {
+    this.sensorService.getIDActual().subscribe((data: any) => {
+      this.idReal = data.ultimo_id;
+    });
+  }
+
+  humedadTiempoReal() {
+    this.sensorService.getHumedadActual().subscribe((data: any) => {
+      this.datoHumedadReal = data.humedad;
+    });
+  }
+
+  temperaturatTiempoReal() {
+    this.sensorService.getTemperaturaActual().subscribe((data: any) => {
+      this.datoTemperaturaReal = data.temperatura;
+    });
+  }
+
+  flujoTiempoReal() {
+    this.sensorService.getFlujoActual().subscribe((data: any) => {
+      this.datoFlujoReal = data.flujo;
+    });
   }
 
   cargarZonas() {
