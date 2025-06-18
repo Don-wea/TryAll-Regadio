@@ -13,4 +13,9 @@ export class AuthService {
   login(username: string, password: string): Observable<any> {
     return this.http.post(this.apiUrl, { username, password });
   }
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('access_token'); // Obtiene el token del local storage
+    return !!token; // Devuelve true si el token existe, false en caso contrario
+  }
 }
