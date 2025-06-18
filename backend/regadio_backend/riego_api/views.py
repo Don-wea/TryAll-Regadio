@@ -1,11 +1,14 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 from .models import ZonaRiego, LecturaSensor, Nodo, Sensor, Humedad, Temperatura, Flujo
 from .serializers import ZonaRiegoSerializer, LecturaSensorSerializer, NodoSerializer, SensorSerializer, HumedadSerializer, TemperaturaSerializer, FlujoSerializer
 from .repository import DataRepository
 import os
 import json
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 IS_TEST_MODE = os.getenv("MODO_TEST", "false").lower() in ("true", "1", "yes")
 print("[DEBUG] MODO_TEST:", IS_TEST_MODE)
@@ -20,6 +23,38 @@ def get_fake_by_id(json_key, id):
         if str(obj.get("id")) == str(id):
             return obj
     return None
+
+class UsuarioViewSet(viewsets.ViewSet):
+    """
+    ViewSet para acceder a los usuarios, usando DataRepository.
+    """
+
+    def list(self, request):
+        if IS_TEST_MODE:
+            data = load_fake_data()
+            return Response(data.get("usuarios", []))  # Devuelve directamente la lista de usuarios fake
+
+        usuarios = DataRepository.get_all(Usuario)
+        serializer = UsuarioSerializer(usuarios, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        if IS_TEST_MODE:
+            data = load_fake_data()
+            usuario = None
+            for u in data.get("usuarios", []):
+                if str(u.get("id")) == str(pk):
+                    usuario = u
+                    break
+            if usuario is None:
+                return Response({"detail": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(usuario)  # Devuelve el usuario fake directo
+
+        usuario = DataRepository.get_by_id(Usuario, pk)
+        if usuario is None:
+            return Response({"detail": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = UsuarioSerializer(usuario)
+        return Response(serializer.data)
 
 @api_view(['GET'])
 def lista_zonas(request):
