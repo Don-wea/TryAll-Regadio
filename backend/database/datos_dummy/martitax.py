@@ -10,22 +10,12 @@ from mongo_models.models import (
     Sensor, Regador, ConfiguracionRiego, Sugerencia,
     LecturaSensor, RegistroRiego
 )
+
 import datetime
 import random
 
 
-def poblar():
-    # --- Usuario ---
-    usuario1 = Usuario(
-        nombre_usuario="martitax",
-        nombre="Marta G",
-        email="soyMarta123@example.com",
-        password_hash="marta123",
-    )
-    usuario1.save()
-    print(f"Usuario creado: {usuario1}")
-
-
+def ZonaCentral(usuario1):
     # --- Zonas ---
     zona1 = ZonaRiego(
         usuario=usuario1,
@@ -41,7 +31,115 @@ def poblar():
         zona=zona1,
         nombre="Nodo Principal",
         descripcion="Nodo de control central",
-        coordenadas={"type": "Point", "coordinates": [70.6483, -33.4569]}
+        coordenadas={"type": "Point", "coordinates": [68.6483, 67.4569]}
+    )
+    nodo1.save()
+    print(f"Nodo creado: {nodo1}")
+
+
+    # --- Sensores ---
+    sensor1 = Sensor(
+        nodo=nodo1,
+        tipo="Humedad",
+        modelo="HMD-100",
+        descripcion="Sensor de humedad del suelo"
+    )
+    sensor1.save()
+    print(f"Sensor creado: {sensor1}")
+
+
+    # --- Regadores ---
+    regador1 = Regador(
+        nodo=nodo1,
+        modelo="RGD-200",
+        descripcion="Regador automático por aspersión"
+    )
+    regador1.save()
+    print(f"Regador creado: {regador1}")
+
+
+    # --- Programación y Configuración de Riego ---
+    programacion1 = ProgramacionDia(
+        dia="Lunes",
+        hora_inicio="06:00",
+        duracion_minutos=30,
+        humedad_objetivo=70.0,
+        ph_minimo=6.0,
+        ph_maximo=7.0,
+        temperatura_maxima=30.0
+    )
+
+    configuracion1 = ConfiguracionRiego(
+        zona=zona1,
+        programacion=programacion1
+    )
+    configuracion1.save()
+    print(f"Configuración de Riego creada: {configuracion1}")
+
+
+    # --- Sugerencias ---
+    sugerencia1 = Sugerencia(
+        zona=zona1,
+        mensaje="Se recomienda disminuir agua en días lluviosos",
+        impacto="bajo"
+    )
+    sugerencia1.save()
+    print(f"Sugerencia creada: {sugerencia1}")
+
+
+
+    # --- 10 Lecturas de Sensor y 10 Registros de Riego ---
+    for i in range(10):
+        fecha_base = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=i)
+
+
+        # Lectura Sensor
+        lectura = LecturaSensor(
+            sensor=sensor1,
+            nodo=nodo1,
+            zona=zona1,
+            tipo="Humedad",
+            valor=round(random.uniform(60.0, 80.0), 2),
+            unidad="%",
+            fecha_hora=fecha_base
+        )
+        lectura.save()
+        print(f"Lectura Sensor {i+1} creada: {lectura.valor}% en {fecha_base.date()}")
+
+
+        # Registro de Riego
+        inicio_riego = fecha_base.replace(hour=6, minute=0)
+        fin_riego = inicio_riego + datetime.timedelta(minutes=30)
+        registro_riego = RegistroRiego(
+            regador=regador1,
+            nodo=nodo1,
+            zona=zona1,
+            cantidad_agua_litros=round(random.uniform(45.0, 55.0), 2),
+            energia_consumida_kwh=round(random.uniform(0.4, 0.6), 2),
+            duracion_segundos=1800,
+            fecha_hora_inicio=inicio_riego,
+            fecha_hora_fin=fin_riego
+        )
+        registro_riego.save()
+        print(f"Registro de Riego {i+1} creado: {registro_riego.cantidad_agua_litros}L el {inicio_riego.date()}")
+
+def ZonaSur(usuario1):
+    # --- Zonas ---
+    zona1 = ZonaRiego(
+        usuario=usuario1,
+        nombre="Zona Central",
+        ubicacion="Sector A"
+    )
+    zona1.save()
+    print(f"Zona de Riego creada: {zona1}")
+
+
+    # --- Nodos ---
+    nodo1 = Nodo(
+        zona=zona1,
+        nombre="Nodo Principal",
+        descripcion="Nodo de control central",
+        coordenadas={"type": "Point", "coordinates": [70.6483, -43.4569]}
     )
     nodo1.save()
     print(f"Nodo creado: {nodo1}")
@@ -134,5 +232,117 @@ def poblar():
         print(f"Registro de Riego {i+1} creado: {registro_riego.cantidad_agua_litros}L el {inicio_riego.date()}")
 
 
+
+    # ----- Nodo 2 -----
+    nodo2 = Nodo(
+        zona=zona1,
+        nombre="Nodo Principal",
+        descripcion="Nodo de control central",
+        coordenadas={"type": "Point", "coordinates": [70.6483, -43.4569]}
+    )
+    nodo2.save()
+    print(f"Nodo creado: {nodo2}")
+
+    # --- Sensores ---
+    sensor2_1 = Sensor(
+        nodo=nodo2,
+        tipo="Humedad",
+        modelo="HMD-100",
+        descripcion="Sensor de humedad del suelo"
+    )
+    sensor2_1.save()
+    print(f"Sensor creado: {sensor2_1}")
+
+
+    # --- Regadores ---
+    regador2_1 = Regador(
+        nodo=nodo2,
+        modelo="RGD-200",
+        descripcion="Regador automático por aspersión"
+    )
+    regador2_1.save()
+    print(f"Regador creado: {regador2_1}")
+
+
+    # --- Programación y Configuración de Riego ---
+    programacion1 = ProgramacionDia(
+        dia="Lunes",
+        hora_inicio="06:00",
+        duracion_minutos=30,
+        humedad_objetivo=70.0,
+        ph_minimo=6.0,
+        ph_maximo=7.0,
+        temperatura_maxima=30.0
+    )
+
+    configuracion1 = ConfiguracionRiego(
+        zona=zona1,
+        programacion=programacion1
+    )
+    configuracion1.save()
+    print(f"Configuración de Riego creada: {configuracion1}")
+
+
+    # --- Sugerencias ---
+    sugerencia1 = Sugerencia(
+        zona=zona1,
+        mensaje="Se recomienda ajustar el riego en días calurosos",
+        impacto="medio"
+    )
+    sugerencia1.save()
+    print(f"Sugerencia creada: {sugerencia1}")
+
+
+
+    # --- 10 Lecturas de Sensor y 10 Registros de Riego ---
+    for i in range(10):
+        fecha_base = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=i)
+
+
+        # Lectura Sensor
+        lectura = LecturaSensor(
+            sensor=sensor2_1,
+            nodo=nodo2,
+            zona=zona1,
+            tipo="Humedad",
+            valor=round(random.uniform(60.0, 80.0), 2),
+            unidad="%",
+            fecha_hora=fecha_base
+        )
+        lectura.save()
+        print(f"Lectura Sensor {i+1} creada: {lectura.valor}% en {fecha_base.date()}")
+
+
+        # Registro de Riego
+        inicio_riego = fecha_base.replace(hour=6, minute=0)
+        fin_riego = inicio_riego + datetime.timedelta(minutes=30)
+        registro_riego = RegistroRiego(
+            regador=regador2_1,
+            nodo=nodo2,
+            zona=zona1,
+            cantidad_agua_litros=round(random.uniform(45.0, 55.0), 2),
+            energia_consumida_kwh=round(random.uniform(0.4, 0.6), 2),
+            duracion_segundos=1800,
+            fecha_hora_inicio=inicio_riego,
+            fecha_hora_fin=fin_riego
+        )
+        registro_riego.save()
+        print(f"Registro de Riego {i+1} creado: {registro_riego.cantidad_agua_litros}L el {inicio_riego.date()}")
+
+
+def poblar():
+    # --- Usuario ---
+    usuario1 = Usuario(
+        nombre_usuario="martitax",
+        nombre="Marta G",
+        email="soyMarta123@example.com",
+        password_hash="marta123",
+    )
+    usuario1.save()
+    print(f"Usuario creado: {usuario1}")
+
+    ZonaCentral(usuario1)
+    ZonaSur(usuario1)
+    
 if __name__ == "__main__":
     poblar()

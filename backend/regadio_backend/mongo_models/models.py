@@ -183,9 +183,9 @@ class LecturaSensor(Document):
     unidad = StringField(required=True)
     fecha_hora = DateTimeField(default=lambda: datetime.datetime.now(datetime.timezone.utc))
 
-    meta = {
-        'collection': 'history'
-    }
+    # meta = {
+    #     'collection': 'history'
+    # }
 
     def __str__(self):
         return (f"LecturaSensor: {self.tipo} valor {self.valor}{self.unidad} "
@@ -210,9 +210,9 @@ class RegistroRiego(Document):
     fecha_hora_inicio = DateTimeField(required=True)
     fecha_hora_fin = DateTimeField(required=True)
 
-    meta = {
-        'collection': 'history'
-    }
+    # meta = {
+    #     'collection': 'history'
+    # }
 
     def __str__(self):
         return (f"RegistroRiego: {self.cantidad_agua_litros} litros (Regador: {self.regador.modelo}) "
