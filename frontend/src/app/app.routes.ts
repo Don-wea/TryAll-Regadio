@@ -6,8 +6,10 @@ import { MonitoreoComponent } from './components/monitoreo/monitoreo.component';
 import { TESTComponent } from './components/test/test.component';
 import { AuthGuard } from './guards/auth.guards';
 
+
 export const routes: Routes = [
     { path: '', component: LayoutComponent, children: [
+        { path: '', redirectTo: 'monitoreo', pathMatch: 'full' },
         { path: 'dashboard', component: DashboardComponent },
         { path: 'monitoreo', component: MonitoreoComponent },
         { path: 'TEST', component: TESTComponent},
