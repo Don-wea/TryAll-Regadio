@@ -186,3 +186,8 @@ class Flujo(Document):
     valor = FloatField(required=True)
     timestamp = DateTimeField(default=datetime.datetime.utcnow)
     sensor_id = StringField(required=True)
+
+class ID(Document):
+    valor = FloatField(required=True)
+    timestamp = DateTimeField(default=datetime.datetime.utcnow)
+    sensor_id = StringField(required=True)

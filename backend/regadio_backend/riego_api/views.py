@@ -136,12 +136,22 @@ def lecturas_por_sensor(request, sensor_id):
 ultimos_humedad = []  # Lista temporal mientras no uses MongoDB
 ultimos_temperatura = []
 ultimos_flujo = []
+ultimo_id = ""
 
 @api_view(['POST'])
 def registrar_datos(request):
+    global ultimo_id  # Declarar que vamos a usar la variable global
+
+    # Obtener datos del cuerpo de la solicitud
     humedad = request.data.get("humedad", 0)
     temperatura = request.data.get("temperatura", 0)
     flujo = request.data.get("flujo", 0)
+    ultimo_id = request.data.get("sensor_id", "")  # Asignar el sensor_id a la variable global
+
+    # Validar los datos (opcional)
+    if not isinstance(humedad, (int, float)) or not isinstance(temperatura, (int, float)) or not isinstance(flujo, (int, float)):
+        return Response({"error": "Datos de humedad, temperatura o flujo inválidos"}, status=status.HTTP_400_BAD_REQUEST)
+
 
     ultimos_humedad.append(humedad)
     ultimos_temperatura.append(temperatura)
@@ -155,6 +165,10 @@ def registrar_datos(request):
         ultimos_flujo.pop(0)
 
     return Response({"mensaje": "Datos recibido"}, status=200)
+
+@api_view(['GET'])
+def ultimo_id(request):
+    return Response({"ultimo_id": ultimo_id})
 
 @api_view(['GET'])
 def obtener_humedad(request):

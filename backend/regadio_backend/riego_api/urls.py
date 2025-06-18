@@ -25,4 +25,6 @@ urlpatterns = [
     path("api/ultima_temperatura/", views.obtener_temperatura, name="obtener_temperatura"),
 
     path("api/ultima_flujo/", views.obtener_flujo, name="obtener_flujo"),
+
+    path("api/ultimo_id/", views.ultimo_id, name="ultimo_id"),
 ] 

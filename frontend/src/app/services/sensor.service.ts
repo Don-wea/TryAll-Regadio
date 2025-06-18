@@ -22,4 +22,8 @@ export class SensorService {
     return this.http.get(this.URL + 'ultima_flujo/');
   }
 
+  getIDActual(): Observable<any> {
+    return this.http.get(this.URL + 'ultimo_id/');
+  }
+
 }
