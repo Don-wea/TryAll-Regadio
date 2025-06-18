@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import (
 from rest_framework.routers import DefaultRouter
 from . import views
 from .views import UsuarioViewSet
+from .views import fake_token_obtain_pair
 
 router = DefaultRouter()
 router.register(r'usuarios', UsuarioViewSet, basename='usuario')
@@ -40,6 +41,7 @@ urlpatterns = [
     path("api/ultimo_id/", views.ultimo_id, name="ultimo_id"),
     
     # Endpoints para JWT
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/', fake_token_obtain_pair, name='fake_token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ] 
