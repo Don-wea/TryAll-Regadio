@@ -20,8 +20,8 @@
           <h3>Nodos</h3>
           <div *ngIf="nodos.length === 0" class="sin-datos">No hay nodos en esta zona</div>
           <ul *ngIf="nodos.length > 0">
-            <li *ngFor="let nodo of nodos">
-              <strong>{{ nodo.nombre }}</strong> (ID: {{ nodo.id }})
+            <li>
+              <strong>NODO: </strong> {{ idReal }}
             </li>
           </ul>
         </div>
@@ -31,8 +31,19 @@
           <h3>Sensores</h3>
           <div *ngIf="sensores.length === 0" class="sin-datos">No hay sensores en esta zona</div>
           <ul *ngIf="sensores.length > 0">
+            <!--
             <li *ngFor="let sensor of sensores">
               <strong>{{ sensor.tipo }}</strong> (ID: {{ sensor.id }})
+            </li>
+          -->
+            <li>
+              <strong>TEMPERATURA: </strong> {{ datoTemperaturaReal }}°C
+            </li>
+            <li>
+              <strong>HUMEDAD: </strong> {{ datoHumedadReal }} %
+            </li>
+            <li>
+              <strong>FLUJO: </strong> {{ datoFlujoReal }} L/s
             </li>
           </ul>
         </div>
@@ -42,10 +53,24 @@
           <h3>Mediciones</h3>
           <div *ngIf="lecturasZona.length === 0" class="sin-datos">No hay mediciones disponibles</div>
           <div *ngIf="lecturasZona.length > 0" class="mediciones-grid">
-            <div *ngFor="let lectura of lecturasZona" class="medicion-card">
+            <!-- <div *ngFor="let lectura of lecturasZona" class="medicion-card">
               <div class="medicion-tipo">{{ lectura.sensor_id.tipo }}</div>
               <div class="medicion-valor">{{ lectura.valor }} {{ lectura.unidad }}</div>
               <div class="medicion-fecha">{{ lectura.fecha_hora | date:'short' }}</div>
+            -->
+            <div class="medicion-card">
+              <div class="medicion-valor">{{ datoTemperaturaReal }}°C</div>
+              <div class="medicion-fecha">Temperatura</div>
+            </div>
+
+            <div class="medicion-card">
+              <div class="medicion-valor">{{ datoHumedadReal }} %</div>
+              <div class="medicion-fecha">Humedad</div>
+            </div>
+
+            <div class="medicion-card">
+              <div class="medicion-valor">{{ datoFlujoReal }} L/s</div>
+              <div class="medicion-fecha">Flujo</div>
             </div>
           </div>
         </div>
