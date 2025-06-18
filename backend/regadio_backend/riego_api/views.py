@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import ZonaRiego, LecturaSensor, Nodo, Sensor, Humedad
-from .serializers import ZonaRiegoSerializer, LecturaSensorSerializer, NodoSerializer, SensorSerializer, HumedadSerializer
+from .models import ZonaRiego, LecturaSensor, Nodo, Sensor, Humedad, Temperatura, Flujo
+from .serializers import ZonaRiegoSerializer, LecturaSensorSerializer, NodoSerializer, SensorSerializer, HumedadSerializer, TemperaturaSerializer, FlujoSerializer
 from .repository import DataRepository
 import os
 import json
@@ -133,23 +133,56 @@ def lecturas_por_sensor(request, sensor_id):
         return Response({"error": "Sensor no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
 
-ultimos_valores = []  # Lista temporal mientras no uses MongoDB
+ultimos_humedad = []  # Lista temporal mientras no uses MongoDB
+ultimos_temperatura = []
+ultimos_flujo = []
 
 @api_view(['POST'])
-def registrar_humedad(request):
+def registrar_datos(request):
     humedad = request.data.get("humedad", 0)
-    ultimos_valores.append(humedad)
-    if len(ultimos_valores) > 20:
-        ultimos_valores.pop(0)  # Guarda solo los últimos 20 valores
-    return Response({"mensaje": "Dato recibido"}, status=200)
+    temperatura = request.data.get("temperatura", 0)
+    flujo = request.data.get("flujo", 0)
+
+    ultimos_humedad.append(humedad)
+    ultimos_temperatura.append(temperatura)
+    ultimos_flujo.append(flujo)
+
+    if len(ultimos_humedad) > 20:
+        ultimos_humedad.pop(0)  # Guarda solo los últimos 20 valores
+    if len(ultimos_temperatura) > 20:
+        ultimos_temperatura.pop(0)
+    if len(ultimos_flujo) > 20:
+        ultimos_flujo.pop(0)
+
+    return Response({"mensaje": "Datos recibido"}, status=200)
 
 @api_view(['GET'])
 def obtener_humedad(request):
-    return Response({"humedad": ultimos_valores[-1] if ultimos_valores else 0})
+    return Response({"humedad": ultimos_humedad[-1] if ultimos_humedad else 0})
+
+@api_view(['GET'])
+def obtener_temperatura(request):
+    return Response({"temperatura": ultimos_temperatura[-1] if ultimos_temperatura else 0})
+
+@api_view(['GET'])
+def obtener_flujo(request):
+    return Response({"flujo": ultimos_flujo[-1] if ultimos_flujo else 0})
 
 
 @api_view(['GET'])
 def humedad_ultima(request):
     ultimo = Humedad.objects.last()
     serializer = HumedadSerializer(ultimo)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def temperatura_ultima(request):
+    ultimo = Temperatura.objects.last()
+    serializer = TemperaturaSerializer(ultimo)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def flujo_ultimo(request):
+    ultimo = Flujo.objects.last()
+    serializer = FlujoSerializer(ultimo)
     return Response(serializer.data)
