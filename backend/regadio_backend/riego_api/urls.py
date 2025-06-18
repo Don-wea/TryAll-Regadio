@@ -1,7 +1,18 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from rest_framework.routers import DefaultRouter
 from . import views
+from .views import UsuarioViewSet
+
+router = DefaultRouter()
+router.register(r'usuarios', UsuarioViewSet, basename='usuario')
 
 urlpatterns = [
+    path('', include(router.urls)),
+    
     # Endpoints para zonas
     path('zonas/', views.lista_zonas, name='lista-zonas'),
     path('zonas/<str:zona_id>/', views.detalle_zona, name='detalle-zona'),
@@ -27,4 +38,8 @@ urlpatterns = [
     path("api/ultima_flujo/", views.obtener_flujo, name="obtener_flujo"),
 
     path("api/ultimo_id/", views.ultimo_id, name="ultimo_id"),
+    
+    # Endpoints para JWT
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ] 

@@ -25,6 +25,7 @@
 
         **Windows**  
         ```bash
+        source .venv/Scripts/activate
         venv\Scripts\activate
         ```
 
