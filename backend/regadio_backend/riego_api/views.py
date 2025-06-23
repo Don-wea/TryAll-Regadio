@@ -166,6 +166,43 @@ def registrar_datos(request):
 
     return Response({"mensaje": "Datos recibido"}, status=200)
 
+cantidad_flujo = 1
+
+@api_view(['POST'])
+def recibir_cantidad_flujo(request):
+    global cantidad_flujo
+    
+    # Obtener cantidad_flujo del query parameter
+    nueva_cantidad = request.query_params.get('cantidad_flujo')
+    
+    if nueva_cantidad is None:
+        return Response(
+            {"error": "Se requiere el parámetro 'cantidad_flujo'"}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    try:
+        # Convertir a float
+        nueva_cantidad = float(nueva_cantidad)
+    except ValueError:
+        return Response(
+            {"error": "Cantidad de flujo debe ser un número"}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    # Actualizar la variable global
+    cantidad_flujo = nueva_cantidad
+    
+    return Response({
+        "mensaje": "Cantidad de flujo actualizada correctamente",
+        "cantidad_flujo": cantidad_flujo
+    }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def enviar_cantidad_flujo(request):
+    return Response({"cantidad_flujo": cantidad_flujo})  # Devuelve la cantidad de flujo como un entero o un numero decimal
+
+
 @api_view(['GET'])
 def ultimo_id(request):
     return Response({"ultimo_id": ultimo_id})

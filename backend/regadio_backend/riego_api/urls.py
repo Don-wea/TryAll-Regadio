@@ -20,11 +20,17 @@ urlpatterns = [
 
     path('datos/', views.registrar_datos, name='registrar_datos'),
 
+    path('api/humedad/', views.humedad_ultima, name='registrar_humedad'),
+
     path("api/ultima_humedad/", views.obtener_humedad, name="obtener_humedad"),
+
+    path("enviar_flujo/", views.recibir_cantidad_flujo, name="recibir_flujo"),
+
+    path("recibir_flujo/", views.enviar_cantidad_flujo, name="enviar_flujo"),
 
     path("api/ultima_temperatura/", views.obtener_temperatura, name="obtener_temperatura"),
 
     path("api/ultima_flujo/", views.obtener_flujo, name="obtener_flujo"),
 
     path("api/ultimo_id/", views.ultimo_id, name="ultimo_id"),
-] 
+]
