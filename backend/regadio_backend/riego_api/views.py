@@ -1,11 +1,16 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 from .models import ZonaRiego, LecturaSensor, Nodo, Sensor, Humedad, Temperatura, Flujo
 from .serializers import ZonaRiegoSerializer, LecturaSensorSerializer, NodoSerializer, SensorSerializer, HumedadSerializer, TemperaturaSerializer, FlujoSerializer
 from .repository import DataRepository
 import os
 import json
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+import datetime
 
 IS_TEST_MODE = os.getenv("MODO_TEST", "false").lower() in ("true", "1", "yes")
 print("[DEBUG] MODO_TEST:", IS_TEST_MODE)
@@ -20,6 +25,67 @@ def get_fake_by_id(json_key, id):
         if str(obj.get("id")) == str(id):
             return obj
     return None
+
+class UsuarioViewSet(viewsets.ViewSet):
+    """
+    ViewSet para acceder a los usuarios, usando DataRepository.
+    """
+
+    def list(self, request):
+        if IS_TEST_MODE:
+            data = load_fake_data()
+            return Response(data.get("usuarios", []))  # Devuelve directamente la lista de usuarios fake
+
+        usuarios = DataRepository.get_all(Usuario)
+        serializer = UsuarioSerializer(usuarios, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        if IS_TEST_MODE:
+            data = load_fake_data()
+            usuario = None
+            for u in data.get("usuarios", []):
+                if str(u.get("id")) == str(pk):
+                    usuario = u
+                    break
+            if usuario is None:
+                return Response({"detail": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(usuario)  # Devuelve el usuario fake directo
+
+        usuario = DataRepository.get_by_id(Usuario, pk)
+        if usuario is None:
+            return Response({"detail": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = UsuarioSerializer(usuario)
+        return Response(serializer.data)
+
+@api_view(['POST'])
+def fake_token_obtain_pair(request):
+    if not IS_TEST_MODE:
+        return Response({"error": "Solo disponible en modo test"}, status=400)
+    username = request.data.get("username")
+    password = request.data.get("password")
+    data = load_fake_data()
+    usuario = next((u for u in data.get("usuarios", []) if u["nombre_usuario"] == username), None)
+    if usuario is None:
+        return Response({"detail": "Usuario no encontrado"}, status=401)
+    if password != "test":
+        return Response({"detail": "Contraseña incorrecta"}, status=401)
+    
+    # Crear un token manualmente
+    refresh = RefreshToken()
+    refresh['user_id'] = usuario['id']
+    refresh['username'] = usuario['nombre_usuario']
+    refresh.set_exp(lifetime=datetime.timedelta(days=7))  # refresh dura 7 días
+
+    access = refresh.access_token
+    access['user_id'] = usuario['id']
+    access['username'] = usuario['nombre_usuario']
+    access.set_exp(lifetime=datetime.timedelta(minutes=30))  # access dura 30 min
+
+    return Response({
+        "refresh": str(refresh),
+        "access": str(access),
+    })
 
 @api_view(['GET'])
 def lista_zonas(request):

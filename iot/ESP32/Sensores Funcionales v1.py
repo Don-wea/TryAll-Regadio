@@ -14,8 +14,8 @@ pulses = 0
 litros_por_pulso = 0.0075
 
 # --- Configuración Wi-Fi ---
-SSID = 'Dpto 601'
-PASSWORD = '94434657'
+SSID = 'WIFI'
+PASSWORD = 'CONTRASEÑA'
 
 # --- URL del backend Django ---
 URL = "http://192.168.1.93:8000/api/datos/"

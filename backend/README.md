@@ -2,31 +2,45 @@
 
 ## 📑 Requisitos previos
 
-- **Python 3.13.3** instalado
-- **Git** instalado
+1. **Python 3.11.0** instalado y con entorno virtual  
+2. **Git**
+3. **mongoDB** (en caso de no tener servidor remoto)  
+    Seguir las instrucciones en `./database/README.md` para tener la base de datos funcionando de forma local
+    y agregar datos dummy.
 
 
-## 📦 Installation
+## 📦 Detalles de Instalacion
+* Entorno virtual
+  
+  1. Crear entorno virtual
+        ```bash
+        python -m venv venv
+        ```
+  2. Activar entorno virtual
+     
+        **linux/macOS**  
+        ```bash
+        source venv/bin/activate
+        ```
 
-1. Crear entorno virtual
+        **Windows**  
+        ```bash
+        source .venv/Scripts/activate
+        venv\Scripts\activate
+        ```
 
-python -m venv venv
-
-2. Activar entorno virtual
-   
-**linux/macOS**
-source venv/bin/activate
-
-**Windows**
-venv\Scripts\activate
-
-**Windows (PowerShell)**
-venv\Scripts\Activate.ps1
-
-3. Instalar dependencias
-
-pip install -r requirements.txt
-
+        **Windows (PowerShell)**  
+        ```bash
+        venv\Scripts\Activate.ps1
+        ```
+    
+  3. Instalar dependencias
+        ```bash
+        pip install -r requirements.txt
+        ```
+    <img src="../docs/export/backend/images/venv.png"/>
+* mongoDB
+  Detalles en `./database/README.md`
 ## Execution
-
-Para ejecutar y trabajar con el proyecto, entrar al directorio ./regadio_backend/README.md
+Para ejecutar y trabajar con el proyecto, entrar al directorio  
+`./regadio_backend/README.md` una vez que el entorno virutal este activado.
