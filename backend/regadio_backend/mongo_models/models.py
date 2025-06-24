@@ -19,18 +19,32 @@ class Usuario(Document):
     nombre = StringField(required=True)
     email = EmailField(required=True, unique=True)
     password_hash = StringField(required=True)
-    rol = StringField #(required=True)
+    rol = StringField(required=True, choices=['admin', 'usuario'], default='usuario')
     fecha_registro = DateTimeField(default=lambda: datetime.datetime.now(datetime.timezone.utc))
 
-    # meta = {
-    #     'collection': 'setup'
-    # }
+    meta = {
+        'collection': 'usuarios'
+    }
 
     def __str__(self):
-        return f"Usuario: {self.nombre_usuario} ({self.nombre}) - Email: {self.email} - Rol: {self.rol}"
+        return f"{self.nombre_usuario} ({self.nombre})"
+# class Usuario(Document):
+#     nombre_usuario = StringField(required=True, unique=True)
+#     nombre = StringField(required=True)
+#     email = EmailField(required=True, unique=True)
+#     password_hash = StringField(required=True)
+#     rol = StringField(required=True, choices=['admin', 'usuario'], default='usuario')
+#     fecha_registro = DateTimeField(default=lambda: datetime.datetime.now(datetime.timezone.utc))
 
-    def to_dict(self):
-        return to_dict(self)
+#     meta = {
+#         'collection': 'usuarios'
+#     }
+
+#     def __str__(self):
+#         return f"Usuario: {self.nombre_usuario} ({self.nombre}) - Email: {self.email} - Rol: {self.rol}"
+
+#     def to_dict(self):
+#         return to_dict(self)
 
 
 class ProgramacionDia(EmbeddedDocument):

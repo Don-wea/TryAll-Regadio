@@ -1,43 +1,33 @@
 # mongoDB 
 
+* Mantener entorno virtual `venv` activado en todo momento  
 
-## Requirements
+## Agregar datos 'dummy' a la base de datos
 
-1. satisfacer los requerimientos previos, encontrados en el directorio  
-   `Tryall-regadio/backend/README.md`
-
-2. *mongoDB instalado ( Sólo en caso de no tener base de datos en la nube)  
-Se utiliza la version 7.0.21, pero no deberian existir problemas de compatibilidad con versiones futuras.
+Ejecutar `python agregar_datos_dummy.py` para la creacion de datos dummy en tu base de datos local *(en caso de trabajar con base de datos local)*  
 
 
+## Como conectar a una base de datos diferente
 
-## Funcionamiento
-
-### --- Agregar datos 'dummy' a la base de datos ---
-
-Ejecutar `agregar_datos_dummy.py` para la creacion de datos dummy en tu base de datos local *(en caso de que no hayan datos y se este trabajando con una base de datos local)*
-
-### --- Conectar a una base de datos diferente ---
-
-En el archivo `TryAll-Regadio/backend/regadio_backend/regadio_backend/settings.py`, dirigirse a la seccion de database, y encontraras lo siguiente:
+En el archivo `TryAll-Regadio/backend/regadio_backend/regadio_backend/settings.py`, dirigirse a la seccion de database, y encontraras lo siguiente:  
 
 ```bash
 # ----- Database -----
 
-# Conexión a MongoDB
-MONGODB_HOST = 'localhost'
+# Conexión a MongoDB  
+MONGODB_HOST = 'localhost'  
 MONGODB_PORT = 27017
 MONGODB_NAME = 'regadio_db'
 
 ```
-Aqui sustituir los puertos, el host y el nombre de la base de datos por los que se deseen utilizar.
+Aqui sustituir los puertos, el host y el nombre de la base de datos por los que se deseen utilizar.  
 
-- **Lista de bases de datos:**  
+## Lista de bases de datos:  
 
   - local  
 
     - MONGODB_HOST = 'localhost'  
-    - MONGODB_PORT = 27017  (puerto por defecto pero puede variar)  
+    - MONGODB_PORT = 27017 (puerto por defecto pero puede variar)  
     - MONGODB_NAME = 'regadio_db'  
     
   - https://mongo.podlech.dev/  
@@ -47,7 +37,7 @@ Aqui sustituir los puertos, el host y el nombre de la base de datos por los que 
 
 
 
-## Comandos
+## Lista de comandos 
 
 | Acción  | Linux              | Windows               |
 |:-----------|:---------------------|:----------------------------|

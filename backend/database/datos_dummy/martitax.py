@@ -1,5 +1,15 @@
 import os
 import sys
+import bcrypt
+
+def hash_password(password: str) -> str:
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed.decode('utf-8')
+def check_password(password: str, hashed_password: str) -> bool:
+    return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
+
+
 path_to_add = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../regadio_backend'))
 print(f"Adding this path to sys.path: {path_to_add}")
 
@@ -335,8 +345,8 @@ def poblar():
     usuario1 = Usuario(
         nombre_usuario="martitax",
         nombre="Marta G",
-        email="soyMarta123@example.com",
-        password_hash="marta123",
+        email="marta@example.com",
+        password_hash=hash_password("marta123"),
     )
     usuario1.save()
     print(f"Usuario creado: {usuario1}")
