@@ -5,25 +5,19 @@
     <mat-drawer #drawer class="sidenav" mode="over" >
       <mat-nav-list>
 
-        
-<!--     ROUTER LINK     -->
-<!--         <a mat-list-item routerLink="/home">Home</a>
-        <a mat-list-item routerLink="/about">About</a>
-        <a mat-list-item routerLink="/contact">Contact</a>
-        <a mat-list-item routerLink="/login">Login</a>
-        <a mat-list-item routerLink="/TEST">TEST</a>
-        <a mat-list-item routerLink="/Flujo">Control de Flujo</a> -->
 
-        
 <!--     PROGRAMATICA     -->
-<!--         <a mat-list-item (click)="navigateToDashboard()">Dashboard</a>
+        <!-- <a mat-list-item (click)="navigateToDashboard()">Dashboard</a> -->
         <a mat-list-item (click)="navigateToMonitoreo()">Monitoreo</a>
-        <a mat-list-item (click)="navigateToTEST()">TEST</a> -->
+        <a mat-list-item (click)="navigateToTEST()">TEST</a>
         <!-- <a mat-list-item (click)="navigateToMyMap()">My Map</a> -->
+        <a mat-list-item (click)="navigateToControlFLujo()">Control de Flujo</a>
+
 
       </mat-nav-list>
     </mat-drawer>
 
+    
     <mat-drawer-content>
       <div>
         <router-outlet></router-outlet>
