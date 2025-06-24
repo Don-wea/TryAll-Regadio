@@ -2,7 +2,10 @@ $color-primary: #4a90e2;
 $color-secondary: #eaf6fb;
 $color-bg-light: #f7f9fb;
 $color-text-dark: #222b45;
-$shadow-smooth: 0 8px 30px rgba(74, 144, 226, 0.08);
+$color-text-muted: #8f9bb3;
+$color-danger: #ff5a5f;
+$shadow-card: 0 8px 30px rgba(74, 144, 226, 0.1);
+$border-radius-md: 12px;
 
 .main-layout {
   display: flex;
@@ -20,28 +23,78 @@ $shadow-smooth: 0 8px 30px rgba(74, 144, 226, 0.08);
   background: white;
 }
 
-mat-drawer-container, mat-drawer {
+mat-drawer-container {
   border-radius: 0 !important;
-  overflow: hidden;
+  overflow: hidden !important;
+  
+  ::ng-deep .mat-drawer-backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+mat-drawer {
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  
+  ::ng-deep .mat-drawer-inner-container {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
 }
 
 .sidenav {
   width: 260px;
   background: white;
-  padding-top: 20px;
   border-radius: 0 !important;
+  overflow: hidden !important;
+  padding: 0 20px;
+  box-sizing: border-box;
+  
+  .sidenav-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 20px;
+    overflow: hidden !important;
+  }
 
-  mat-nav-list {
-    a.mat-list-item {
+  .nav-menu {
+    flex: 1;
+    overflow: hidden !important;
+    
+    mat-nav-list {
+      padding: 0;
+      overflow: hidden !important;
+    }
+    
+    a.mat-mdc-list-item {
       display: flex;
       align-items: center;
-      padding: 12px 20px;
+      height: 48px;
+      padding: 0 16px;
       font-weight: 500;
       font-size: 16px;
-      color: $color-text-dark;
-      border-radius: 0;
-      margin: 8px 12px;
+      color: $color-primary;
+      background-color: transparent;
+      border-radius: $border-radius-md;
+      margin: 8px 0;
       transition: background-color 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+
+      &.active {
+        background-color: lighten($color-primary, 35%);
+        box-shadow: $shadow-card;
+        transform: scale(1.02);
+      }
+
+      mat-icon {
+        margin-right: 12px;
+        color: $color-primary;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
 
       span {
         line-height: 1.2;
@@ -50,7 +103,71 @@ mat-drawer-container, mat-drawer {
 
       &:hover {
         background-color: lighten($color-primary, 35%);
-        transform: translateX(4px);
+        transform: scale(1.02);
+        box-shadow: $shadow-card;
+        
+        mat-icon {
+          color: $color-primary;
+        }
+      }
+    }
+  }
+
+  .logout-section {
+    border-top: 1px solid lighten($color-text-muted, 30%);
+    padding: 16px 0;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      height: 48px;
+      padding: 0 16px;
+      font-weight: 500;
+      font-size: 16px;
+      color: $color-danger;
+      background-color: transparent;
+      border-radius: $border-radius-md;
+      margin: 0;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      text-align: left;
+
+      mat-icon {
+        margin-right: 12px;
+        color: $color-danger;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      span {
+        line-height: 1.2;
+        font-size: 16px;
+      }
+
+      &:hover {
+        background-color: lighten($color-danger, 35%);
+        transform: scale(1.02);
+        box-shadow: $shadow-card;
+        
+        mat-icon {
+          color: $color-danger;
+        }
+        
+        span {
+          color: $color-danger;
+        }
+      }
+
+      &:active {
+        transform: scale(0.98);
       }
     }
   }

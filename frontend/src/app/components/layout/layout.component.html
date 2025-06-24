@@ -3,17 +3,33 @@
 
   <mat-drawer-container class="sidenav-container">
     <mat-drawer #drawer class="sidenav" mode="over">
-      <mat-nav-list>
-        <a mat-list-item (click)="navigateToMonitoreo()">
-          <span>Monitoreo</span>
-        </a>
-        <a mat-list-item (click)="navigateToTEST()">
-          <span>TEST</span>
-        </a>
-        <a mat-list-item (click)="navigateToControlFLujo()">
-          <span>Control de Flujo</span>
-        </a>
-      </mat-nav-list>
+      <div class="sidenav-content">
+        <div class="nav-menu">
+          <mat-nav-list>
+            <a mat-list-item 
+               [class.active]="isActive('/monitoreo')"
+               (click)="navigateToMonitoreo()">
+              <span>Monitoreo</span>
+            </a>
+            <a mat-list-item 
+               [class.active]="isActive('/TEST')"
+               (click)="navigateToTEST()">
+              <span>Test</span>
+            </a>
+            <a mat-list-item 
+               [class.active]="isActive('/flujo')"
+               (click)="navigateToControlFLujo()">
+              <span>Control de Flujo</span>
+            </a>
+          </mat-nav-list>
+        </div>
+        <div class="logout-section">
+          <button mat-list-item class="logout-btn" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Cerrar Sesión</span>
+          </button>
+        </div>
+      </div>
     </mat-drawer>
 
     <mat-drawer-content>
