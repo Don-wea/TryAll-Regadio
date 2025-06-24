@@ -1,49 +1,50 @@
 # regadio-backend
 
-## 📑 Requisitos previos
 
-1. **Python 3.11.0** instalado y con entorno virtual  
-2. **Git**
-3. **mongoDB** (en caso de no tener servidor remoto)  
-    Seguir las instrucciones en `./database/README.md` para tener la base de datos funcionando de forma local
-    y agregar datos dummy.
-
-
-## 📦 Detalles de Instalacion
+## 📦 Detalles de Instalacion y Ejecucion
 * Entorno virtual
   
-  1. Crear entorno virtual
-        ```bash
-        python -m venv venv
-        ```
-  2. Activar entorno virtual
-     
-        **linux/macOS**  
-        ```bash
-        source venv/bin/activate
-        ```
+  1. Crear entorno virtual  
+      ```bash
+      python -m venv .venv
+      ```
+  2. Activar entorno virtual  
+      **linux/macOS**  
 
-        **Windows**  
-        ```bash
-        source .venv/Scripts/activate
-        venv\Scripts\activate
-        ```
+      ```bash
+      source .venv/bin/activate
+      ```
 
-        **Windows (PowerShell)**  
-        ```bash
-        venv\Scripts\Activate.ps1
-        ```
+      **Windows**  
+
+      ```bash
+      source .venv/Scripts/activate
+      .venv\Scripts\activate
+      ```
+
+      **Windows (PowerShell)**  
+
+      ```bash
+      .venv\Scripts\Activate.ps1
+      ```
     
-  3. Instalar dependencias
-        ```bash
-        pip install -r requirements.txt
-        ```
-        Para el login , si no funciona pip install django djangorestframework mongoengine bcrypt djangorestframework-simplejwt drf-yasg,pip install PyJWT
-
+  1. Instalar dependencias
+      ```bash
+      pip install -r requirements.txt
+      ```
+      Para el login , si no funciona pip install django djangorestframework mongoengine bcrypt djangorestframework-simplejwt drf-yasg,pip install PyJWT
 
     <img src="../docs/export/backend/images/venv.png"/>
-* mongoDB
-  Detalles en `./database/README.md`
-## Execution
-Para ejecutar y trabajar con el proyecto, entrar al directorio  
-`./regadio_backend/README.md` una vez que el entorno virutal este activado.
+
+
+* Base de datos
+      1. Asegurarse de que el servicio de mongoDB esté funcionando correctamente
+      2. agregar datos dummy `python database/agregar_datos_dummy.py` esto crea una base de datos local y agregar archivos dummy
+   
+* Servidor
+      1. `cd regadio_backend`
+      2. `python manage.py makemigrations`
+      3. `python manage.py migrate`
+      4. `python manage.py runserver`
+
+
