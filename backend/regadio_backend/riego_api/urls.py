@@ -32,16 +32,24 @@ urlpatterns = [
 
     path('datos/', views.registrar_datos, name='registrar_datos'),
 
+    path('api/humedad/', views.humedad_ultima, name='registrar_humedad'),
+
     path("api/ultima_humedad/", views.obtener_humedad, name="obtener_humedad"),
+
+    path("enviar_flujo/", views.recibir_cantidad_flujo, name="recibir_flujo"),
+
+    path("recibir_flujo/", views.enviar_cantidad_flujo, name="enviar_flujo"),
 
     path("api/ultima_temperatura/", views.obtener_temperatura, name="obtener_temperatura"),
 
     path("api/ultima_flujo/", views.obtener_flujo, name="obtener_flujo"),
 
     path("api/ultimo_id/", views.ultimo_id, name="ultimo_id"),
+
     
     # Endpoints para JWT
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/', fake_token_obtain_pair, name='fake_token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ] 
+

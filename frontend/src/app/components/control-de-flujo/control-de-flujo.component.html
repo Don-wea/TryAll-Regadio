@@ -1,0 +1,51 @@
+<div class="container">
+    <h1>STATUS: @if (flujo_objetivo != 0) { REGANDO } @else { DETENIDO } </h1>
+    <h2>Control de Flujo de Riego</h2>
+    <h5>Flujo actual: {{ flujo_actual }} Litros</h5>
+    <h5>Flujo objetivo actual: {{ flujo_objetivo }} Litros</h5>
+    
+    <form (ngSubmit)="enviarFlujo()" #flujoForm="ngForm">
+      <div class="form-group">
+        <label for="cantidadFlujo">Cantidad de Flujo (Litros):</label>
+        <input 
+          type="number" 
+          id="cantidadFlujo" 
+          name="cantidadFlujo"
+          [(ngModel)]="cantidadFlujo"
+          required
+          min="0"
+          class="form-control"
+          placeholder="Ingrese cantidad de flujo"
+        >
+      </div>
+      
+      <div class="button-group">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="flujoForm.invalid"
+        >
+          Enviar
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-secondary"
+          (click)="limpiarFormulario()"
+        >
+          Limpiar
+        </button>
+      </div>
+    </form>
+  
+    <!-- Mostrar mensaje de respuesta -->
+    <div 
+      *ngIf="mensajeRespuesta" 
+      class="alert"
+      [ngClass]="{
+        'alert-success': !mensajeRespuesta.includes('Error'),
+        'alert-danger': mensajeRespuesta.includes('Error')
+      }"
+    >
+      {{ mensajeRespuesta }}
+    </div>
+  </div>
