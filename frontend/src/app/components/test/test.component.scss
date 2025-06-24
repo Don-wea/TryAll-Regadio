@@ -1,0 +1,137 @@
+$color-bg: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #e3f0fa 100%);
+$color-card: #ffffff;
+$color-primary: #4a90e2;
+$color-secondary: #eaf6fb;
+$color-text-dark: #222b45;
+$color-text-muted: #8f9bb3;
+$shadow-card: 0 8px 30px rgba(74, 144, 226, 0.1);
+$border-radius-lg: 18px;
+$border-radius-md: 12px;
+
+.sensor-data-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 40px;
+  background: $color-bg;
+  min-height: 100vh;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+.sensor-card {
+  background: $color-card;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-card;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+
+  .header-with-icon {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+
+    i {
+      font-size: 38px;
+      color: $color-primary;
+      margin-right: 18px;
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: $color-text-dark;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .sensor-details {
+    p {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 18px;
+      color: $color-text-dark;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .label {
+      font-weight: 600;
+      color: $color-text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .value {
+      font-weight: 700;
+      color: $color-primary;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .sensor-data-container {
+    padding: 25px;
+    gap: 25px;
+  }
+
+  .sensor-card {
+    padding: 25px;
+
+    .header-with-icon {
+      i {
+        font-size: 32px;
+      }
+      h2 {
+        font-size: 24px;
+      }
+    }
+
+    .sensor-details {
+      p {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .sensor-data-container {
+    padding: 20px;
+    gap: 20px;
+    grid-template-columns: 1fr;
+  }
+
+  .sensor-card {
+    padding: 20px;
+
+    .header-with-icon {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 20px;
+
+      i {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+      h2 {
+        font-size: 22px;
+      }
+    }
+
+    .sensor-details {
+      p {
+        flex-direction: column; 
+        align-items: flex-start;
+      }
+      .label {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
