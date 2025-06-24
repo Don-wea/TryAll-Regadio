@@ -1,25 +1,23 @@
-<div>
+<div class="main-layout">
   <app-header (toggleSidenavEvent)="drawer.toggle()"></app-header>
 
-  <mat-drawer-container class="sidenav-container" autosize>
-    <mat-drawer #drawer class="sidenav" mode="over" >
+  <mat-drawer-container class="sidenav-container">
+    <mat-drawer #drawer class="sidenav" mode="over">
       <mat-nav-list>
-
-
-<!--     PROGRAMATICA     -->
-        <!-- <a mat-list-item (click)="navigateToDashboard()">Dashboard</a> -->
-        <a mat-list-item (click)="navigateToMonitoreo()">Monitoreo</a>
-        <a mat-list-item (click)="navigateToTEST()">TEST</a>
-        <!-- <a mat-list-item (click)="navigateToMyMap()">My Map</a> -->
-        <a mat-list-item (click)="navigateToControlFLujo()">Control de Flujo</a>
-
-
+        <a mat-list-item (click)="navigateToMonitoreo()">
+          <span>Monitoreo</span>
+        </a>
+        <a mat-list-item (click)="navigateToTEST()">
+          <span>TEST</span>
+        </a>
+        <a mat-list-item (click)="navigateToControlFLujo()">
+          <span>Control de Flujo</span>
+        </a>
       </mat-nav-list>
     </mat-drawer>
 
-    
     <mat-drawer-content>
-      <div>
+      <div class="main-content">
         <router-outlet></router-outlet>
       </div>
     </mat-drawer-content>

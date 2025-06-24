@@ -1,51 +1,84 @@
-<div class="container">
-    <h1>STATUS: @if (flujo_objetivo != 0) { REGANDO } @else { DETENIDO } </h1>
-    <h2>Control de Flujo de Riego</h2>
-    <h5>Flujo actual: {{ flujo_actual }} Litros</h5>
-    <h5>Flujo objetivo actual: {{ flujo_objetivo }} Litros</h5>
-    
+<div class="control-container">
+  <!-- Panel de Estado -->
+  <div class="status-panel">
+    <div class="header-with-icon">
+      <i class="fas fa-water"></i>
+      <h2>STATUS: 
+        <span [ngClass]="{'status-regando': flujo_objetivo != 0, 'status-detenido': flujo_objetivo == 0}">
+          @if (flujo_objetivo != 0) { REGANDO } @else { DETENIDO }
+        </span>
+      </h2>
+    </div>
+    <div class="status-metrics">
+      <div class="metric-card" [ngClass]="{'active': flujo_actual > 0}">
+        <i class="fas fa-tint card-icon"></i>
+        <div class="metric-value">{{ flujo_actual }}</div>
+        <div class="metric-label">Flujo actual (L/min)</div>
+      </div>
+      <div class="metric-card" [ngClass]="{'active': flujo_objetivo > 0}">
+        <i class="fas fa-bullseye card-icon"></i>
+        <div class="metric-value">{{ flujo_objetivo }}</div>
+        <div class="metric-label">Flujo objetivo (L/min)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario de Control -->
+  <div class="form-card">
+    <div class="header-with-icon">
+      <i class="fas fa-sliders-h"></i>
+      <h3>Control de Flujo de Riego</h3>
+    </div>
     <form (ngSubmit)="enviarFlujo()" #flujoForm="ngForm">
       <div class="form-group">
-        <label for="cantidadFlujo">Cantidad de Flujo (Litros):</label>
-        <input 
-          type="number" 
-          id="cantidadFlujo" 
+        <label for="cantidadFlujo">Cantidad de Flujo (Litros por minuto):</label>
+        <input
+          type="number"
+          id="cantidadFlujo"
           name="cantidadFlujo"
           [(ngModel)]="cantidadFlujo"
           required
           min="0"
+          max="100"
+          step="0.1"
           class="form-control"
-          placeholder="Ingrese cantidad de flujo"
+          placeholder="Ingrese cantidad de flujo (0-100 L/min)"
         >
       </div>
-      
       <div class="button-group">
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           class="btn btn-primary"
           [disabled]="flujoForm.invalid"
         >
+          <i class="fas fa-paper-plane"></i>
           Enviar
         </button>
-        <button 
-          type="button" 
+        <button
+          type="button"
           class="btn btn-secondary"
           (click)="limpiarFormulario()"
         >
+          <i class="fas fa-eraser"></i>
           Limpiar
         </button>
       </div>
     </form>
-  
-    <!-- Mostrar mensaje de respuesta -->
-    <div 
-      *ngIf="mensajeRespuesta" 
-      class="alert"
-      [ngClass]="{
-        'alert-success': !mensajeRespuesta.includes('Error'),
-        'alert-danger': mensajeRespuesta.includes('Error')
-      }"
-    >
-      {{ mensajeRespuesta }}
-    </div>
   </div>
+
+  <!-- Alerta de Respuesta -->
+  <div
+    *ngIf="mensajeRespuesta"
+    class="response-alert"
+    [ngClass]="{
+      'alert-success': !mensajeRespuesta.includes('Error'),
+      'alert-danger': mensajeRespuesta.includes('Error')
+    }"
+  >
+    <i class="fas" [ngClass]="{
+      'fa-check-circle': !mensajeRespuesta.includes('Error'), 
+      'fa-exclamation-circle': mensajeRespuesta.includes('Error')
+    }"></i>
+    <p>{{ mensajeRespuesta }}</p>
+  </div>
+</div>

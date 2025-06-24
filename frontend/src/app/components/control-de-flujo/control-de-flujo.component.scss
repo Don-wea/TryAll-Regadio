@@ -1,0 +1,334 @@
+$color-bg: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #e3f0fa 100%);
+$color-card: #ffffff;
+$color-primary: #4a90e2;
+$color-secondary: #eaf6fb;
+$color-text-dark: #222b45;
+$color-text-muted: #8f9bb3;
+$color-danger: #ff5a5f;
+$color-warning: #ffb347;
+$color-success: #28a745;
+$shadow-card: 0 8px 30px rgba(74, 144, 226, 0.1);
+$border-radius-lg: 18px;
+$border-radius-md: 12px;
+$border-radius-sm: 8px;
+
+.control-container {
+    background: $color-bg;
+    color: $color-text-dark;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    // Permitir scroll vertical
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.status-panel {
+    background: $color-card;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-card;
+    padding: 20px 25px;
+    color: $color-text-dark;
+}
+
+.header-with-icon {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+
+    i {
+        font-size: 24px;
+        color: $color-primary;
+        margin-right: 12px;
+    }
+
+    h2 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+        color: $color-text-dark;
+    }
+
+    h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+        color: $color-text-dark;
+        letter-spacing: 0.6px;
+    }
+}
+
+.status-regando {
+    color: $color-success;
+    animation: pulse 2s infinite;
+}
+
+.status-detenido {
+    color: $color-danger;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.status-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.metric-card {
+    background: $color-secondary;
+    border-radius: $border-radius-md;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.08);
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(74, 144, 226, 0.15);
+    }
+
+    &.active {
+        background: linear-gradient(135deg, $color-primary, #5ba0f2);
+        color: white;
+
+        .card-icon,
+        .metric-value {
+            color: white;
+        }
+
+        .metric-label {
+            color: rgba(255, 255, 255, 0.8);
+        }
+    }
+}
+
+.card-icon {
+    font-size: 28px;
+    color: $color-primary;
+    margin-bottom: 8px;
+    transition: color 0.3s ease;
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: $color-primary;
+    margin-bottom: 4px;
+    transition: color 0.3s ease;
+}
+
+.metric-label {
+    font-size: 13px;
+    color: $color-text-muted;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+}
+
+.form-card {
+    background: $color-card;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-card;
+    padding: 20px 25px;
+    color: $color-text-dark;
+
+    .header-with-icon {
+        i {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+    }
+}
+
+.form-group {
+    margin-bottom: 15px;
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: $color-text-dark;
+        font-size: 15px;
+    }
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid transparent;
+    border-radius: $border-radius-sm;
+    background: $color-secondary;
+    font-size: 15px;
+    color: $color-text-dark;
+    transition: all 0.3s ease;
+    outline: none;
+    // Asegurar que el input no sobresalga
+    box-sizing: border-box;
+    max-width: 100%;
+
+    &:focus {
+        border-color: $color-primary;
+        background: $color-card;
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    }
+
+    &::placeholder {
+        color: $color-text-muted;
+    }
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: $border-radius-sm;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 120px;
+    outline: none;
+}
+
+.btn-primary {
+    background: $color-primary;
+    color: white;
+
+    &:hover:not(:disabled) {
+        background: darken($color-primary, 10%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+    }
+
+    &:disabled {
+        background: $color-text-muted;
+        cursor: not-allowed;
+        opacity: 0.6;
+        transform: none;
+    }
+}
+
+.btn-secondary {
+    background: $color-secondary;
+    color: $color-text-dark;
+    border: 2px solid $color-primary;
+
+    &:hover {
+        background: $color-primary;
+        color: white;
+        transform: translateY(-2px);
+    }
+}
+
+.response-alert {
+    background: $color-card;
+    border-radius: $border-radius-md;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: $shadow-card;
+    animation: slideIn 0.3s ease;
+    // Asegurar que la alerta sea visible y tenga margen inferior
+    margin-bottom: 40px;
+    width: 100%;
+    box-sizing: border-box;
+
+    p {
+        margin: 0;
+        font-size: 16px;
+        color: $color-text-dark;
+        font-weight: 500;
+        flex: 1;
+    }
+}
+
+.alert-success {
+    border-left: 5px solid $color-success;
+
+    i {
+        color: $color-success;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+}
+
+.alert-danger {
+    border-left: 5px solid $color-danger;
+
+    i {
+        color: $color-danger;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+}
+
+// Agregar animación slideIn que faltaba
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .control-container {
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .status-panel, .form-card {
+        padding: 25px 20px;
+    }
+
+    .header-with-icon h2 {
+        font-size: 24px;
+    }
+
+    .status-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .response-alert {
+        margin-bottom: 20px;
+    }
+}

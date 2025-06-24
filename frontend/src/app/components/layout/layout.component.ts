@@ -7,6 +7,7 @@ import { routes } from '../../app.routes';
 //angular material
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 //my components
 import { HeaderComponent } from '../header/header.component';
@@ -16,7 +17,8 @@ import { HeaderComponent } from '../header/header.component';
   selector: 'app-layout',
   imports: [
      MatSidenavModule,
-     MatListModule, 
+     MatListModule,
+     MatIconModule, 
      CommonModule, 
      HeaderComponent, 
     //  FooterComponent,
