@@ -9,19 +9,18 @@ import { ControlDeFlujoComponent } from './components/control-de-flujo/control-d
 
 import { AuthGuard } from './guards/auth.guards';
 
-
-
 export const routes: Routes = [
-    { path: '', component: LayoutComponent, children: [
-        { path: '', redirectTo: 'monitoreo', pathMatch: 'full' },
-        { path: 'dashboard', component: DashboardComponent },
-        { path: 'monitoreo', component: MonitoreoComponent },
-        { path: 'TEST', component: TESTComponent},
-        { path: 'Flujo', component: ControlDeFlujoComponent}
-    ]},
-  
-    ], canActivate: [AuthGuard]},
-      
+    { 
+        path: '', 
+        component: LayoutComponent, 
+        children: [
+            { path: '', redirectTo: 'monitoreo', pathMatch: 'full' },
+            // { path: 'dashboard', component: DashboardComponent },
+            { path: 'monitoreo', component: MonitoreoComponent },
+            { path: 'TEST', component: TESTComponent},
+            { path: 'flujo', component: ControlDeFlujoComponent}
+        ],
+        canActivate: [AuthGuard] // This is where the AuthGuard should be placed
+    },
     { path: "login", component: LoginComponent}
-
 ];
