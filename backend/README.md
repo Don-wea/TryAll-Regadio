@@ -38,6 +38,9 @@
         ```bash
         pip install -r requirements.txt
         ```
+        Para el login , si no funciona pip install django djangorestframework mongoengine bcrypt djangorestframework-simplejwt drf-yasg,pip install PyJWT
+
+
     <img src="../docs/export/backend/images/venv.png"/>
 * mongoDB
   Detalles en `./database/README.md`

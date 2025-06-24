@@ -2,16 +2,18 @@
   <div class="login-container">
     <h2>Iniciar Sesión</h2>
 
-    <!-- Formulario reactivo -->
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="input-group">
-        <label for="username">Usuario</label>
+        <label for="email">Correo</label>
         <input
-          id="username"
-          formControlName="username"
-          type="text"
-          placeholder="Ingresa tu usuario"
+          id="email"
+          formControlName="email"
+          type="email"
+          placeholder="Ingresa tu correo"
         />
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" style="color:red;font-size:12px;">
+          Ingresa un correo válido
+        </div>
       </div>
 
       <div class="input-group">
@@ -22,6 +24,9 @@
           type="password"
           placeholder="Ingresa tu contraseña"
         />
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" style="color:red;font-size:12px;">
+          La contraseña es obligatoria
+        </div>
       </div>
 
       <div class="forgot-password">
@@ -33,9 +38,9 @@
         <label for="remember-me">Recuérdame</label>
       </div>
 
-      <button type="submit" class="login-btn">Iniciar sesión</button>
+      <button type="submit" class="login-btn" [disabled]="loginForm.invalid">Iniciar sesión</button>
 
-      <div *ngIf="errorMessage" style="color: red;">
+      <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
       </div>
     </form>
