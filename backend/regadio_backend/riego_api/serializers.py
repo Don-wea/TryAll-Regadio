@@ -1,6 +1,40 @@
 from rest_framework import serializers
 from rest_framework_mongoengine import serializers as mongo_serializers
-from .models import Usuario, ZonaRiego, LecturaSensor, Nodo, Sensor, Humedad, Temperatura, Flujo, ID
+from .models import (
+    Usuario, 
+    ZonaRiego, 
+    LecturaSensor, 
+    Nodo, 
+    Sensor, 
+    Humedad, 
+    Temperatura, 
+    Flujo, 
+    ID,
+    Regador,
+    ConfiguracionRiego,
+    ProgramacionDia,
+    Sugerencia,
+    RegistroRiego,
+    )
+# login del gudmar
+class UsuarioSerializer(serializers.Serializer):
+    id = serializers.CharField(read_only=True)
+    nombre_usuario = serializers.CharField()
+    nombre = serializers.CharField()
+    email = serializers.EmailField()
+    rol = serializers.CharField()
+    fecha_registro = serializers.DateTimeField(read_only=True)
+
+class UsuarioRegisterSerializer(serializers.Serializer):
+    nombre_usuario = serializers.CharField()
+    nombre = serializers.CharField()
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+    rol = serializers.CharField(required=False)
+
+class UsuarioLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
 
 
 class ZonaRiegoSerializer(mongo_serializers.DocumentSerializer):
@@ -8,6 +42,10 @@ class ZonaRiegoSerializer(mongo_serializers.DocumentSerializer):
         model = ZonaRiego
         fields = '__all__'
 
+class RegadorSerializer(mongo_serializers.DocumentSerializer):
+    class Meta:
+        model = Regador
+        fields = '__all__'
 
 class NodoSerializer(mongo_serializers.DocumentSerializer):
     class Meta:
@@ -47,25 +85,33 @@ class IdSerializer(mongo_serializers.DocumentSerializer):
         model = ID
         fields = '__all__'
         
-class UsuarioSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=100)
-    email = serializers.EmailField()
-    nombre = serializers.CharField(max_length=200, required=False, allow_blank=True)
 
-    def create(self, validated_data):
-        # Crear usuario en la base con mongoengine
-        return Usuario(**validated_data).save()
-
-    def update(self, instance, validated_data):
-        instance.username = validated_data.get('username', instance.username)
-        instance.email = validated_data.get('email', instance.email)
-        instance.nombre = validated_data.get('nombre', instance.nombre)
-        instance.save()
-        return instance
 
 
 # Serializer directo ligado al modelo mongoengine para leer/editar completo
 class UsuarioDocumentSerializer(mongo_serializers.DocumentSerializer):
     class Meta:
         model = Usuario
+        fields = '__all__'
+
+class ProgramacionDiaSerializer(mongo_serializers.DocumentSerializer):
+    class Meta:
+        model = ProgramacionDia
+        fields = '__all__'
+
+class ConfiguracionRiegoSerializer(mongo_serializers.DocumentSerializer):
+    programacion = ProgramacionDiaSerializer()
+
+    class Meta:
+        model = ConfiguracionRiego
+        fields = '__all__'
+
+class SugerenciaSerializer(mongo_serializers.DocumentSerializer):
+    class Meta:
+        model = Sugerencia
+        fields = '__all__'
+
+class RegistroRiegoSerializer(mongo_serializers.DocumentSerializer):
+    class Meta:
+        model = RegistroRiego
         fields = '__all__'

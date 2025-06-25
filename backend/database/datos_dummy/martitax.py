@@ -14,8 +14,13 @@ path_to_add = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../reg
 print(f"Adding this path to sys.path: {path_to_add}")
 
 sys.path.append(path_to_add)
+import enum
 
-from mongo_models.models import (
+from riego_api.models import (
+    TipoSensor
+)
+
+from riego_api.models import (
     Usuario, ProgramacionDia, ZonaRiego, Nodo,
     Sensor, Regador, ConfiguracionRiego, Sugerencia,
     LecturaSensor, RegistroRiego
@@ -28,7 +33,7 @@ import random
 def ZonaCentral(usuario1):
     # --- Zonas ---
     zona1 = ZonaRiego(
-        usuario=usuario1,
+        usuario_id=usuario1,
         nombre="Zona Central",
         ubicacion="Sector A"
     )
@@ -38,7 +43,7 @@ def ZonaCentral(usuario1):
 
     # --- Nodos ---
     nodo1 = Nodo(
-        zona=zona1,
+        zona_id=zona1,
         nombre="Nodo Principal",
         descripcion="Nodo de control central",
         coordenadas={"type": "Point", "coordinates": [68.6483, 67.4569]}
@@ -49,8 +54,8 @@ def ZonaCentral(usuario1):
 
     # --- Sensores ---
     sensor1 = Sensor(
-        nodo=nodo1,
-        tipo="Humedad",
+        nodo_id=nodo1,
+        tipo='humedad_suelo',
         modelo="HMD-100",
         descripcion="Sensor de humedad del suelo"
     )
@@ -60,7 +65,7 @@ def ZonaCentral(usuario1):
 
     # --- Regadores ---
     regador1 = Regador(
-        nodo=nodo1,
+        nodo_id=nodo1,
         modelo="RGD-200",
         descripcion="Regador automático por aspersión"
     )
@@ -80,7 +85,7 @@ def ZonaCentral(usuario1):
     )
 
     configuracion1 = ConfiguracionRiego(
-        zona=zona1,
+        zona_id=zona1,
         programacion=programacion1
     )
     configuracion1.save()
@@ -89,7 +94,7 @@ def ZonaCentral(usuario1):
 
     # --- Sugerencias ---
     sugerencia1 = Sugerencia(
-        zona=zona1,
+        zona_id=zona1,
         mensaje="Se recomienda disminuir agua en días lluviosos",
         impacto="bajo"
     )
@@ -105,10 +110,10 @@ def ZonaCentral(usuario1):
 
         # Lectura Sensor
         lectura = LecturaSensor(
-            sensor=sensor1,
-            nodo=nodo1,
-            zona=zona1,
-            tipo="Humedad",
+            sensor_id=sensor1,
+            nodo_id=nodo1,
+            zona_id=zona1,
+            tipo="humedad_suelo",
             valor=round(random.uniform(60.0, 80.0), 2),
             unidad="%",
             fecha_hora=fecha_base
@@ -121,9 +126,9 @@ def ZonaCentral(usuario1):
         inicio_riego = fecha_base.replace(hour=6, minute=0)
         fin_riego = inicio_riego + datetime.timedelta(minutes=30)
         registro_riego = RegistroRiego(
-            regador=regador1,
-            nodo=nodo1,
-            zona=zona1,
+            regador_id=regador1,
+            nodo_id=nodo1,
+            zona_id=zona1,
             cantidad_agua_litros=round(random.uniform(45.0, 55.0), 2),
             energia_consumida_kwh=round(random.uniform(0.4, 0.6), 2),
             duracion_segundos=1800,
@@ -136,7 +141,7 @@ def ZonaCentral(usuario1):
 def ZonaSur(usuario1):
     # --- Zonas ---
     zona1 = ZonaRiego(
-        usuario=usuario1,
+        usuario_id=usuario1,
         nombre="Zona Central",
         ubicacion="Sector A"
     )
@@ -146,7 +151,7 @@ def ZonaSur(usuario1):
 
     # --- Nodos ---
     nodo1 = Nodo(
-        zona=zona1,
+        zona_id=zona1,
         nombre="Nodo Principal",
         descripcion="Nodo de control central",
         coordenadas={"type": "Point", "coordinates": [70.6483, -43.4569]}
@@ -157,7 +162,7 @@ def ZonaSur(usuario1):
 
     # --- Sensores ---
     sensor1 = Sensor(
-        nodo=nodo1,
+        nodo_id=nodo1,
         tipo="Humedad",
         modelo="HMD-100",
         descripcion="Sensor de humedad del suelo"
@@ -168,7 +173,7 @@ def ZonaSur(usuario1):
 
     # --- Regadores ---
     regador1 = Regador(
-        nodo=nodo1,
+        nodo_id=nodo1,
         modelo="RGD-200",
         descripcion="Regador automático por aspersión"
     )
@@ -188,7 +193,7 @@ def ZonaSur(usuario1):
     )
 
     configuracion1 = ConfiguracionRiego(
-        zona=zona1,
+        zona_id=zona1,
         programacion=programacion1
     )
     configuracion1.save()
@@ -197,7 +202,7 @@ def ZonaSur(usuario1):
 
     # --- Sugerencias ---
     sugerencia1 = Sugerencia(
-        zona=zona1,
+        zona_id=zona1,
         mensaje="Se recomienda ajustar el riego en días calurosos",
         impacto="medio"
     )
@@ -213,10 +218,10 @@ def ZonaSur(usuario1):
 
         # Lectura Sensor
         lectura = LecturaSensor(
-            sensor=sensor1,
-            nodo=nodo1,
-            zona=zona1,
-            tipo="Humedad",
+            sensor_id=sensor1,
+            nodo_id=nodo1,
+            zona_id=zona1,
+            tipo="humedad_suelo",
             valor=round(random.uniform(60.0, 80.0), 2),
             unidad="%",
             fecha_hora=fecha_base
@@ -229,9 +234,9 @@ def ZonaSur(usuario1):
         inicio_riego = fecha_base.replace(hour=6, minute=0)
         fin_riego = inicio_riego + datetime.timedelta(minutes=30)
         registro_riego = RegistroRiego(
-            regador=regador1,
-            nodo=nodo1,
-            zona=zona1,
+            regador_id=regador1,
+            nodo_id=nodo1,
+            zona_id=zona1,
             cantidad_agua_litros=round(random.uniform(45.0, 55.0), 2),
             energia_consumida_kwh=round(random.uniform(0.4, 0.6), 2),
             duracion_segundos=1800,
@@ -245,7 +250,7 @@ def ZonaSur(usuario1):
 
     # ----- Nodo 2 -----
     nodo2 = Nodo(
-        zona=zona1,
+        zona_id=zona1,
         nombre="Nodo Principal",
         descripcion="Nodo de control central",
         coordenadas={"type": "Point", "coordinates": [70.6483, -43.4569]}
@@ -255,8 +260,8 @@ def ZonaSur(usuario1):
 
     # --- Sensores ---
     sensor2_1 = Sensor(
-        nodo=nodo2,
-        tipo="Humedad",
+        nodo_id=nodo2,
+        tipo="humedad_suelo",
         modelo="HMD-100",
         descripcion="Sensor de humedad del suelo"
     )
@@ -266,7 +271,7 @@ def ZonaSur(usuario1):
 
     # --- Regadores ---
     regador2_1 = Regador(
-        nodo=nodo2,
+        nodo_id=nodo2,
         modelo="RGD-200",
         descripcion="Regador automático por aspersión"
     )
@@ -286,7 +291,7 @@ def ZonaSur(usuario1):
     )
 
     configuracion1 = ConfiguracionRiego(
-        zona=zona1,
+        zona_id=zona1,
         programacion=programacion1
     )
     configuracion1.save()
@@ -295,7 +300,7 @@ def ZonaSur(usuario1):
 
     # --- Sugerencias ---
     sugerencia1 = Sugerencia(
-        zona=zona1,
+        zona_id=zona1,
         mensaje="Se recomienda ajustar el riego en días calurosos",
         impacto="medio"
     )
@@ -311,10 +316,10 @@ def ZonaSur(usuario1):
 
         # Lectura Sensor
         lectura = LecturaSensor(
-            sensor=sensor2_1,
-            nodo=nodo2,
-            zona=zona1,
-            tipo="Humedad",
+            sensor_id=sensor2_1,
+            nodo_id=nodo2,
+            zona_id=zona1,
+            tipo="humedad_suelo",
             valor=round(random.uniform(60.0, 80.0), 2),
             unidad="%",
             fecha_hora=fecha_base
@@ -327,9 +332,9 @@ def ZonaSur(usuario1):
         inicio_riego = fecha_base.replace(hour=6, minute=0)
         fin_riego = inicio_riego + datetime.timedelta(minutes=30)
         registro_riego = RegistroRiego(
-            regador=regador2_1,
-            nodo=nodo2,
-            zona=zona1,
+            regador_id=regador2_1,
+            nodo_id=nodo2,
+            zona_id=zona1,
             cantidad_agua_litros=round(random.uniform(45.0, 55.0), 2),
             energia_consumida_kwh=round(random.uniform(0.4, 0.6), 2),
             duracion_segundos=1800,

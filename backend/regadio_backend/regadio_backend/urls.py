@@ -17,8 +17,8 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('riego_api.urls')),
-    path('test/', include('mongo_models.urls')),
-    path('login/', include('mongo_models.urls')),
+   #  path('test/', include('mongo_models.urls')),
+    path('login/', include('riego_api.urls')),
     # path('my_maps/', include('my_maps.urls')),
 
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

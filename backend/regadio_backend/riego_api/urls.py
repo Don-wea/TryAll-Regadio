@@ -8,6 +8,13 @@ from . import views
 from .views import UsuarioViewSet
 from .views import fake_token_obtain_pair
 
+from .views import (    
+    UsuarioRegister, 
+    UsuarioLogin, 
+    UsuarioList, 
+    UsuarioDetail
+)
+
 router = DefaultRouter()
 router.register(r'usuarios', UsuarioViewSet, basename='usuario')
 
@@ -51,5 +58,11 @@ urlpatterns = [
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/', fake_token_obtain_pair, name='fake_token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('register/', UsuarioRegister.as_view()),
+    path('login/', UsuarioLogin.as_view()),
+    path('usuario/', UsuarioList.as_view()),
+    path('usuario/<str:usuario_id>/', UsuarioDetail.as_view()),
+
 ] 
 
