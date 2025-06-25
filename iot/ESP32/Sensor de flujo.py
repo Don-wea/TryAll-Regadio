@@ -1,8 +1,10 @@
 from machine import Pin, Timer
 import time
+import dht 
 
 # Configuración del pin para el sensor
 sensor_pin = Pin(15, Pin.IN)
+sensor_Humedad = dht.DHT11(Pin(14))
 
 # Variable para contar pulsos
 pulses = 0
