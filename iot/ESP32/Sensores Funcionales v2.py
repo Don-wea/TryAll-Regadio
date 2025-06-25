@@ -9,13 +9,13 @@ sensor_pin = Pin(15, Pin.IN)
 sensor_humedad_temperatura = dht.DHT11(Pin(14))
 
 # Configuración de WiFi
-SSID = 'Dpto 601'  # Reemplazar con tu SSID
-PASSWORD = '94434657'  # Reemplazar con tu contraseña
+SSID = 'Xiaomi 12 Pro'  # Reemplazar con tu SSID
+PASSWORD = '12345678'  # Reemplazar con tu contraseña
 
 ID_NODO = 'ESP32_1'
 
 # URL del backend
-URL = 'http://192.168.1.95:8000'
+URL = 'http://192.168.252.96:8000'
 BASE_URL_OBTENER = f'{URL}/api/recibir_flujo/'  # URL para obtener cantidad_flujo
 BASE_URL_POST = f'{URL}/api/enviar_flujo/'  # URL para actualizar cantidad_flujo
 BASE_URL_ENVIAR_FLUJO_ACTUAL = f'{URL}/api/enviar_flujo_actual/'

@@ -15,6 +15,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { APIService } from '../../services/api.service';
+import { SensorService } from '../../services/sensor.service';
 
 // Interfaz para la zona con ID y Nombre
 interface ZonaDisplay {
@@ -75,6 +76,7 @@ export class HistoryComponent implements OnInit {
 
   constructor(
     private historicosService: HistoricosService,
+    private sensorService: SensorService,
     private apiService: APIService  // Inyectamos APIService
   ) {}
 
@@ -149,5 +151,18 @@ export class HistoryComponent implements OnInit {
 
   actualizarDatos() {
     this.cargarDatos();
+  }
+
+  guardarLecturas() {
+    this.sensorService.guardarLecturasActuales().subscribe({
+      next: (response: any) => {
+        console.log(response.mensaje);
+        // this.mensajeRespuesta = 'Lecturas guardadas correctamente';
+      },
+      error: (error: any) => {
+        console.error('Error al guardar lecturas:', error);
+        // this.mensajeRespuesta = 'Error al guardar lecturas';
+      }
+    });
   }
 }
