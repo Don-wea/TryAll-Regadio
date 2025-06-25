@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 //my components
 import { HeaderComponent } from '../header/header.component';
 import { AuthService } from '../../auth/auth.service'; // Importa el servicio de autenticación
+import { ChatIaComponent } from '../chat-ia/chat-ia.component';
 // import { FooterComponent } from '../footer/footer.component';
 
 @Component({
@@ -24,6 +25,7 @@ import { AuthService } from '../../auth/auth.service'; // Importa el servicio de
      MatButtonModule,
      CommonModule, 
      HeaderComponent, 
+     ChatIaComponent,
     //  FooterComponent,
      RouterOutlet
   ],
@@ -44,7 +46,9 @@ export class LayoutComponent {
   navigateToDashboard() {  // Función que nos lleva al dashboard
     this.router.navigate(['/dashboard']);
   } 
-   
+  navigateToChatbot() {  // Función que nos lleva al chatbot
+    this.router.navigate(['/chat']);
+  }
   navigateToMonitoreo(){  // Función que nos lleva a la home
     this.router.navigate(['/monitoreo']); 
   }
