@@ -30,7 +30,7 @@
 
 ' UI Parameters
 !$border_radius = 4
-!$border_thickness = 1.5
+!$border_thickness = 1.9
 !$font_main = "'Fira Code', monospace"
 !$font_title_size = 24
 !$font_large = 16
@@ -149,13 +149,17 @@ activityStart, activityEnd, activityStop {
 </style>
 ' ============ CYBERPUNK GLOW EFFECTS ===========
 skinparam Arrow {
+  
   FontStyle {
     highlight bold
     warning bold,underline
+    
+
   }
   FontColor {
     highlight $accent_cyan
     warning $accent_pink
   }
 }
+skinparam ArrowFontColor $text_highlight
 @enduml

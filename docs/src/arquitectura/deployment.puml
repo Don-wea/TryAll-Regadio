@@ -1,4 +1,7 @@
 @startuml
+
+!include style/midnight-cyber.puml
+
 !define RECTANGLE class
 skinparam rectangle {
   BackgroundColor<<campo>> #D5F5E3
