@@ -9,6 +9,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 import datetime
+import google.generativeai as genai
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import requests
+
 
 from rest_framework_mongoengine import viewsets as mongo_viewsets
 from .models import (
@@ -53,6 +58,54 @@ from drf_yasg.utils import swagger_auto_schema
 import jwt
 from django.conf import settings
 from datetime import datetime, timedelta
+
+#AI 
+def chat_with_gemini(request):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body)
+            prompt = body.get('message', '')
+            if not prompt:
+                return JsonResponse({'error': 'No message provided'}, status=400)
+
+            # Usa tu API key aquí:
+            api_key = ""
+            endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+            headers = {'Content-Type': 'application/json'}
+            data = {
+                "contents": [
+                    {
+                        "parts": [
+                            {
+                                "text": prompt
+                            }
+                        ]
+                    }
+                ]
+            }
+
+            resp = requests.post(endpoint, headers=headers, json=data)
+            print("[DEBUG] Gemini API resp:", resp.status_code, resp.text)  # Para depurar
+
+            if resp.status_code == 200:
+                response_json = resp.json()
+                try:
+                    answer = response_json['candidates'][0]['content']['parts'][0]['text']
+                except Exception:
+                    answer = "[Sin respuesta de Gemini]"
+                return JsonResponse({'response': answer})
+            else:
+                return JsonResponse({'error': 'Gemini API error', 'details': resp.text}, status=500)
+
+        except Exception as e:
+            import traceback
+            print("[EXCEPTION]", e)
+            traceback.print_exc()
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Only POST method allowed'}, status=405)
+
+
 
 class UsuarioRegister(APIView):
     @swagger_auto_schema(request_body=UsuarioRegisterSerializer)
