@@ -14,6 +14,9 @@ export class SensorService {
   getHumedadTemperaturaActual(): Observable<any> {
     return this.http.get(this.URL + 'recibir_humedad_y_temperatura/');
   }
+  guardarLecturasActuales(): Observable<any> {
+    return this.http.get(this.URL + 'guardar_humedad_temperatura/');
+  }
 
   getHumedadActual(): Observable<any> {
     return this.http.get(this.URL + 'api/ultima_humedad/');

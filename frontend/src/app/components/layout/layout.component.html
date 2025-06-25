@@ -27,6 +27,11 @@
                (click)="navigateToControlFLujo()">
               <span>Control de Flujo</span>
             </a>
+            <a mat-list-item 
+               [class.active]="isActive('/flujo')"
+               (click)="navigateToHistory()">
+              <span>History</span>
+            </a>
           </mat-nav-list>
         </div>
         <div class="logout-section">

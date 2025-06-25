@@ -6,6 +6,7 @@ import { MonitoreoComponent } from './components/monitoreo/monitoreo.component';
 import { TESTComponent } from './components/test/test.component';
 import { ChatIaComponent } from './components/chat-ia/chat-ia.component'; 
 import { ControlDeFlujoComponent } from './components/control-de-flujo/control-de-flujo.component';
+import { HistoryComponent } from './components/history/history.component';
 
 import { AuthGuard } from './guards/auth.guards';
 
@@ -20,6 +21,7 @@ export const routes: Routes = [
             { path: 'TEST', component: TESTComponent},
             { path: 'flujo', component: ControlDeFlujoComponent},
             { path: 'chat', component: ChatIaComponent },
+            { path: 'history', component: HistoryComponent },
         ],
         canActivate: [AuthGuard] // This is where the AuthGuard should be placed
     },

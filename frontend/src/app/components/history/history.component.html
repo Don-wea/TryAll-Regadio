@@ -1,0 +1,147 @@
+<div class="controls">
+  <mat-form-field appearance="outline">
+    <mat-label>Zona</mat-label>
+    <mat-select [(ngModel)]="zonaSeleccionadaId" (selectionChange)="actualizarDatos()">
+      <mat-option value="">Todas</mat-option>
+      <mat-option *ngFor="let zona of zonas" [value]="zona.id">{{ zona.nombre }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>N° registros</mat-label>
+    <input matInput type="number" [(ngModel)]="cantidadRegistros" (change)="actualizarDatos()" min="1" max="100">
+  </mat-form-field>
+</div>
+
+<div class="data-grid">
+  <mat-card class="data-card">
+    <mat-card-header>
+      <mat-card-title>Humedades</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="{ datasets: humedadChartData, labels: humedadChartLabels }"
+          [options]="humedadChartOptions"
+          [type]="humedadChartType">
+        </canvas>
+      </div>
+      <div class="table-container">
+        <table mat-table [dataSource]="humedades" class="mat-elevation-z2 full-width-table">
+          <ng-container matColumnDef="zona">
+            <th mat-header-cell *matHeaderCellDef>Zona</th>
+            <td mat-cell *matCellDef="let element">{{ element.zona }}</td>
+          </ng-container>
+          <ng-container matColumnDef="sensor_id">
+            <th mat-header-cell *matHeaderCellDef>Sensor ID</th>
+            <td mat-cell *matCellDef="let element">{{ element.sensor_id }}</td>
+          </ng-container>
+          <ng-container matColumnDef="valor">
+            <th mat-header-cell *matHeaderCellDef>Valor</th>
+            <td mat-cell *matCellDef="let element">{{ element.valor }}</td>
+          </ng-container>
+          <ng-container matColumnDef="unidad">
+            <th mat-header-cell *matHeaderCellDef>Unidad</th>
+            <td mat-cell *matCellDef="let element">{{ element.unidad }}</td>
+          </ng-container>
+          <ng-container matColumnDef="fecha_hora">
+            <th mat-header-cell *matHeaderCellDef>Fecha/Hora</th>
+            <td mat-cell *matCellDef="let element">{{ element.fecha_hora | date:'short' }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsHumedades"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsHumedades;"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="data-card">
+    <mat-card-header>
+      <mat-card-title>Temperaturas</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="{ datasets: temperaturaChartData, labels: temperaturaChartLabels }"
+          [options]="temperaturaChartOptions"
+          [type]="temperaturaChartType">
+        </canvas>
+      </div>
+      <div class="table-container">
+        <table mat-table [dataSource]="temperaturas" class="mat-elevation-z2 full-width-table">
+          <ng-container matColumnDef="zona">
+            <th mat-header-cell *matHeaderCellDef>Zona</th>
+            <td mat-cell *matCellDef="let element">{{ element.zona }}</td>
+          </ng-container>
+          <ng-container matColumnDef="sensor_id">
+            <th mat-header-cell *matHeaderCellDef>Sensor ID</th>
+            <td mat-cell *matCellDef="let element">{{ element.sensor_id }}</td>
+          </ng-container>
+          <ng-container matColumnDef="valor">
+            <th mat-header-cell *matHeaderCellDef>Valor</th>
+            <td mat-cell *matCellDef="let element">{{ element.valor }}</td>
+          </ng-container>
+          <ng-container matColumnDef="unidad">
+            <th mat-header-cell *matHeaderCellDef>Unidad</th>
+            <td mat-cell *matCellDef="let element">{{ element.unidad }}</td>
+          </ng-container>
+          <ng-container matColumnDef="fecha_hora">
+            <th mat-header-cell *matHeaderCellDef>Fecha/Hora</th>
+            <td mat-cell *matCellDef="let element">{{ element.fecha_hora | date:'short' }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsTemperaturas"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsTemperaturas;"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="data-card">
+    <mat-card-header>
+      <mat-card-title>Flujos</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="{ datasets: flujoChartData, labels: flujoChartLabels }"
+          [options]="flujoChartOptions"
+          [type]="flujoChartType">
+        </canvas>
+      </div>
+      <div class="table-container">
+        <table mat-table [dataSource]="flujos" class="mat-elevation-z2 full-width-table">
+          <ng-container matColumnDef="zona">
+            <th mat-header-cell *matHeaderCellDef>Zona</th>
+            <td mat-cell *matCellDef="let element">{{ element.zona }}</td>
+          </ng-container>
+          <ng-container matColumnDef="regador_id">
+            <th mat-header-cell *matHeaderCellDef>Regador ID</th>
+            <td mat-cell *matCellDef="let element">{{ element.regador_id }}</td>
+          </ng-container>
+          <ng-container matColumnDef="cantidad_agua_litros">
+            <th mat-header-cell *matHeaderCellDef>Agua (L)</th>
+            <td mat-cell *matCellDef="let element">{{ element.cantidad_agua_litros }}</td>
+          </ng-container>
+          <ng-container matColumnDef="energia_consumida_kwh">
+            <th mat-header-cell *matHeaderCellDef>Energía (kWh)</th>
+            <td mat-cell *matCellDef="let element">{{ element.energia_consumida_kwh }}</td>
+          </ng-container>
+          <ng-container matColumnDef="duracion_segundos">
+            <th mat-header-cell *matHeaderCellDef>Duración (s)</th>
+            <td mat-cell *matCellDef="let element">{{ element.duracion_segundos }}</td>
+          </ng-container>
+          <ng-container matColumnDef="fecha_hora_inicio">
+            <th mat-header-cell *matHeaderCellDef>Inicio</th>
+            <td mat-cell *matCellDef="let element">{{ element.fecha_hora_inicio | date:'short' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="fecha_hora_fin">
+            <th mat-header-cell *matHeaderCellDef>Fin</th>
+            <td mat-cell *matCellDef="let element">{{ element.fecha_hora_fin | date:'short' }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsFlujos"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsFlujos;"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -17,6 +17,8 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 from pymongo import MongoClient
 
+from mongoengine import DateTimeField
+
 from rest_framework_mongoengine import viewsets as mongo_viewsets
 from .models import (
     Usuario, 
@@ -576,8 +578,103 @@ def retornar_flujo_actual(request):
 def enviar_cantidad_flujo(request):
     return Response({"cantidad_flujo": cantidad_flujo})  # Devuelve la cantidad de flujo como un entero o un numero decimal
 
-ultima_humedad = 0
-ultima_temperatura = 0
+
+# variables
+ultima_humedad = 4
+ultima_temperatura = 9
+
+# creacion de identidad falsa para poder almacenar datos en tiempo real
+def identidad_falsa():
+    ultimo_usuario = Usuario.objects.order_by('-id').first()
+    if ultimo_usuario:
+        print(ultimo_usuario.id)
+    else:
+        print("No hay usuarios")
+
+        # --- Zonas ---
+    zona1 = ZonaRiego(
+        usuario_id=ultimo_usuario,
+        nombre="Zona Principal",
+        ubicacion="Sector A"
+    )
+    zona1.save()
+    print(f"Zona de Riego creada: {zona1}")
+
+
+    # --- Nodos ---
+    nodo1 = Nodo(
+        zona_id=zona1,
+        nombre="Nodo Principal",
+        descripcion="Nodo de control central",
+        coordenadas={"type": "Point", "coordinates": [68.6483, 67.4569]}
+    )
+    nodo1.save()
+    print(f"Nodo creado: {nodo1}")
+
+
+    # --- Sensores ---
+    sensor1 = Sensor(
+        nodo_id=nodo1,
+        tipo='Humedad',
+        modelo="HMD-100",
+        descripcion="Sensor de humedad del suelo"
+    )
+    sensor1.save()
+    print(f"Sensor creado: {sensor1}")
+
+    sensor2 = Sensor(
+        nodo_id=nodo1,
+        tipo='Temperatura',
+        modelo="HMD-100",
+        descripcion="Sensor de temperatura del suelo"
+    )
+    sensor2.save()
+
+    return (ultimo_usuario,zona1, nodo1, sensor1, sensor2)
+
+# globals.py or views.py (top level)
+usuario_f = None
+zona1_f = None
+nodo1_f = None
+sensor1_f = None
+sensor2_f = None
+
+def initialize_globals():
+    global usuario_f, zona1_f, nodo1_f, sensor1_f, sensor2_f
+
+    if zona1_f is not None:
+        # Already initialized in this server process
+        print("[INFO] Globals already initialized.")
+        return
+    
+    usuario_f = Usuario.objects.first()  # Or filter by some rule if needed
+    zona = ZonaRiego.objects(nombre="Zona Principal").first()
+    if zona:
+        print("[INFO] Zona Principal exists, fetching related records...")
+
+        zona1_f = zona
+        zona1_f = ZonaRiego.objects(usuario_id=usuario_f).first()
+
+        nodo1_f = Nodo.objects(zona_id=zona).first()
+        if not nodo1_f:
+            raise Exception("Nodo not found for Zona Principal")
+
+        sensor1_f = Sensor.objects(nodo_id=nodo1_f).first()
+        if not sensor1_f:
+            raise Exception("Sensor not found for Zona Principal")
+
+        sensor2_f = Sensor.objects(nodo_id=nodo1_f).skip(1).first()
+        if not sensor2_f:
+            raise Exception("Second Sensor not found for Zona Principal")
+
+        
+
+    else:
+        print("[INFO] Zona Principal not found, creating new identity...")
+        usuario_f, zona1_f, nodo1_f, sensor1_f, sensor2_f = identidad_falsa()
+
+initialize_globals()
+
 @api_view(['POST'])
 def recibir_humedad_y_temperatura(request):
     global ultima_humedad
@@ -585,6 +682,44 @@ def recibir_humedad_y_temperatura(request):
     ultima_humedad = request.query_params.get('humedad')
     ultima_temperatura = request.query_params.get('temperatura')
     return Response({"humedad": ultima_humedad, "temperatura": ultima_temperatura})
+
+def guardar_humedad_temperatura(request):
+    global ultima_humedad, ultima_temperatura
+    print("[DEBUG] Guardando humedad:", ultima_humedad, "y temperatura:", ultima_temperatura)
+    try:
+
+        # Crear registro de humedad
+        lectura_humedad = LecturaSensor(
+            sensor_id=sensor1_f,
+            nodo_id=nodo1_f,
+            zona_id=zona1_f,
+            tipo="Humedad",
+            valor=ultima_humedad,
+            unidad="%",
+            fecha_hora=timezone.now()
+        )
+        print("Humedad y temperatura guardadas correctamente1")
+        lectura_humedad.save()
+        print("Humedad y temperatura guardadas correctamente2")
+        # Crear registro de temperatura
+        lectura_temperatura = LecturaSensor(
+            sensor_id=sensor2_f,
+            nodo_id=nodo1_f,
+            zona_id=zona1_f,
+            tipo="Temperatura",
+            valor=ultima_temperatura,
+            unidad="C",
+            fecha_hora=timezone.now()
+        )
+        lectura_temperatura.save()
+        
+        return JsonResponse({'mensaje': 'Datos guardados correctamente'}, status=201)
+    
+    except Exception as e:
+        print("[EXCEPTION] Error al guardar humedad y temperatura:", e)
+        return JsonResponse({'error': str(e)}, status=500)
+    
+
 
 @api_view(['GET'])
 def enviar_humedad_y_temperatura(request):
@@ -635,14 +770,6 @@ def flujo_ultimo(request):
     ultimo = Flujo.objects.last()
     serializer = FlujoSerializer(ultimo)
     return Response(serializer.data)
-
-
-
-
-
-
-
-
 
 
 
@@ -712,6 +839,9 @@ def historicos_ultimas_temperaturas(request, cantidad):
     ),
     responses={201: openapi.Response('Humedad registrada OK')}
 )
+
+
+
 @api_view(['POST'])
 def guardar_humedad(request):
     try:
