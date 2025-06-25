@@ -37,7 +37,7 @@ export class HistoricosService {
 
   constructor(private http: HttpClient) {}
 
-  getUltimasHumidades(cantidad: number): Observable<Humedad[]> {
+  getUltimasHumedades(cantidad: number): Observable<Humedad[]> {
     return this.http.get<Humedad[]>(`${this.baseUrl}/ultimas_humedades/${cantidad}/`);
   }
 
