@@ -118,11 +118,11 @@ class Sensor(Document):
         return f"{self.tipo} en {self.nodo_id.nombre}"
 
 class LecturaSensor(Document):
-    sensor_id = ReferenceField(Sensor, required=True)
-    nodo_id = ReferenceField(Nodo, required=True)
-    zona_id = ReferenceField(ZonaRiego, required=True)
+    sensor_id = ReferenceField(Sensor)
+    nodo_id = ReferenceField(Nodo)
+    zona_id = ReferenceField(ZonaRiego)
     tipo = StringField()
-    valor = FloatField(required=True)
+    valor = FloatField()
     unidad = StringField()
     fecha_hora = DateTimeField(default=lambda: datetime.now(timezone.utc))
 
@@ -184,13 +184,13 @@ class Regador(Document):
         return f"Regador en {self.nodo_id.nombre}"
 
 class RegistroRiego(Document):
-    regador_id = ReferenceField(Regador, required=True)
-    nodo_id = ReferenceField(Nodo, required=True)
-    zona_id = ReferenceField(ZonaRiego, required=True)
-    cantidad_agua_litros = FloatField(required=True)
+    regador_id = ReferenceField(Regador)
+    nodo_id = ReferenceField(Nodo)
+    zona_id = ReferenceField(ZonaRiego)
+    cantidad_agua_litros = FloatField()
     energia_consumida_kwh = FloatField()
-    duracion_segundos = IntField(required=True)
-    fecha_hora_inicio = DateTimeField(required=True)
+    duracion_segundos = IntField()
+    fecha_hora_inicio = DateTimeField()
     fecha_hora_fin = DateTimeField()
 
     meta = {
