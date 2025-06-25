@@ -69,7 +69,7 @@ def chat_with_gemini(request):
                 return JsonResponse({'error': 'No message provided'}, status=400)
 
             # Usa tu API key aquí:
-            api_key = ""
+            api_key = "AIzaSyBABrw0-QDkG85bEOGux8JirHrpEEeg-Cg"
             endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
             headers = {'Content-Type': 'application/json'}
             data = {
@@ -457,6 +457,7 @@ def lecturas_por_sensor(request, sensor_id):
 ultimos_humedad = []  # Lista temporal mientras no uses MongoDB
 ultimos_temperatura = []
 ultimos_flujo = []
+
 ultimo_id = ""
 
 @api_view(['POST'])
@@ -550,9 +551,18 @@ def enviar_humedad_y_temperatura(request):
     global ultima_temperatura
     return Response({"humedad": ultima_humedad, "temperatura": ultima_temperatura})
 
+
+@api_view(['POST'])
+def recibir_ultimo_id(request):
+    global ultimo_id
+    ultimo_id = request.query_params.get('nodo_ID')
+    return Response({"nodo_ID": ultimo_id})
+
 @api_view(['GET'])
-def ultimo_id(request):
+def enviar_ultimo_id(request):
+    global ultimo_id
     return Response({"ultimo_id": ultimo_id})
+    
 
 @api_view(['GET'])
 def obtener_humedad(request):
