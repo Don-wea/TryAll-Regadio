@@ -17,6 +17,12 @@
               <span>Test</span>
             </a>
             <a mat-list-item 
+               [class.active]="isActive('/chatbot')"
+               (click)="navigateToChatbot()">
+              <span>Chatbot IA</span>
+              <mat-icon class="ml-2">smart_toy</mat-icon>
+            </a>
+            <a mat-list-item 
                [class.active]="isActive('/flujo')"
                (click)="navigateToControlFLujo()">
               <span>Control de Flujo</span>
