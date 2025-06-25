@@ -43,8 +43,10 @@ urlpatterns = [
     path("recibir_flujo_actual/", views.retornar_flujo_actual, name="recibir_flujo_actual"),
 
     path("enviar_humedad_y_temperatura/", views.recibir_humedad_y_temperatura, name="enviar_humedad_y_temperatura"),
-
     path("recibir_humedad_y_temperatura/", views.enviar_humedad_y_temperatura, name="recibir_humedad_y_temperatura/"),
+    path('guardar_humedad_temperatura/', views.guardar_humedad_temperatura, name='guardar_humedad_temperatura'),
+    
+
 
     path("api/ultima_temperatura/", views.obtener_temperatura, name="obtener_temperatura"),
     path("api/ultima_flujo/", views.obtener_flujo, name="obtener_flujo"),

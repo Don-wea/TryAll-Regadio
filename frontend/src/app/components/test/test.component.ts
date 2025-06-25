@@ -70,12 +70,27 @@ export class TESTComponent {
     });
   }
 
+  // Funciones para obtener datos en tiempo real
   HumedadyTiempoReal(){
     this.sensorService.getHumedadTemperaturaActual().subscribe((data: any) => {
       this.datoHumedadReal = data.humedad;
       this.datoTemperaturaReal = data.temperatura;
     });
   }
+  
+  guardarLecturas() {
+    this.sensorService.guardarLecturasActuales().subscribe({
+      next: (response: any) => {
+        console.log(response.mensaje);
+        // this.mensajeRespuesta = 'Lecturas guardadas correctamente';
+      },
+      error: (error: any) => {
+        console.error('Error al guardar lecturas:', error);
+        // this.mensajeRespuesta = 'Error al guardar lecturas';
+      }
+    });
+  }
+
 
   humedadTiempoReal() {
     this.sensorService.getHumedadActual().subscribe((data: any) => {

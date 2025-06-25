@@ -60,6 +60,10 @@ export class LayoutComponent {
   navigateToControlFLujo() {  // Función para ir a la página "Control Flujo"
     this.router.navigate(['/flujo']);  
   }
+  
+  navigateToHistory() {  // Función para ir a la página "Control Flujo"
+    this.router.navigate(['/history']);  
+  }
   // navigateToMyMap() {  // Función para ir a la página "Content"
   //   this.router.navigate(['/my-map']); 
   // }
