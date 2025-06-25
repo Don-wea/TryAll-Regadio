@@ -467,7 +467,7 @@ def registrar_datos(request):
     humedad = request.data.get("humedad", 0)
     temperatura = request.data.get("temperatura", 0)
     flujo = request.data.get("flujo", 0)
-    ultimo_id = request.data.get("sensor_id", "")  # Asignar el sensor_id a la variable global
+    ultimo_id = request.data.get("nodo_id", "")  # Asignar el sensor_id a la variable global
 
     # Validar los datos (opcional)
     if not isinstance(humedad, (int, float)) or not isinstance(temperatura, (int, float)) or not isinstance(flujo, (int, float)):
@@ -487,7 +487,7 @@ def registrar_datos(request):
 
     return Response({"mensaje": "Datos recibido"}, status=200)
 
-cantidad_flujo = 1
+cantidad_flujo = 0
 
 @api_view(['POST'])
 def recibir_cantidad_flujo(request):
@@ -519,10 +519,36 @@ def recibir_cantidad_flujo(request):
         "cantidad_flujo": cantidad_flujo
     }, status=status.HTTP_200_OK)
 
+flujo_actual = 1
+@api_view(['POST'])
+def obtener_flujo_actual(request):
+    global flujo_actual
+    flujo_actual = request.query_params.get('flujo_actual')
+    return Response({"flujo_actual": flujo_actual})
+
+@api_view(['GET'])
+def retornar_flujo_actual(request):
+    return Response({"flujo_actual": flujo_actual})
+
 @api_view(['GET'])
 def enviar_cantidad_flujo(request):
     return Response({"cantidad_flujo": cantidad_flujo})  # Devuelve la cantidad de flujo como un entero o un numero decimal
 
+ultima_humedad = 0
+ultima_temperatura = 0
+@api_view(['POST'])
+def recibir_humedad_y_temperatura(request):
+    global ultima_humedad
+    global ultima_temperatura
+    ultima_humedad = request.query_params.get('humedad')
+    ultima_temperatura = request.query_params.get('temperatura')
+    return Response({"humedad": ultima_humedad, "temperatura": ultima_temperatura})
+
+@api_view(['GET'])
+def enviar_humedad_y_temperatura(request):
+    global ultima_humedad
+    global ultima_temperatura
+    return Response({"humedad": ultima_humedad, "temperatura": ultima_temperatura})
 
 @api_view(['GET'])
 def ultimo_id(request):

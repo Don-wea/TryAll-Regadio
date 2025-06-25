@@ -37,6 +37,15 @@ urlpatterns = [
     path("api/ultima_humedad/", views.obtener_humedad, name="obtener_humedad"),
     path("enviar_flujo/", views.recibir_cantidad_flujo, name="recibir_flujo"),
     path("recibir_flujo/", views.enviar_cantidad_flujo, name="enviar_flujo"),
+
+    path("enviar_flujo_actual/", views.obtener_flujo_actual, name="enviar_flujo_actual"),
+
+    path("recibir_flujo_actual/", views.retornar_flujo_actual, name="recibir_flujo_actual"),
+
+    path("enviar_humedad_y_temperatura/", views.recibir_humedad_y_temperatura, name="enviar_humedad_y_temperatura"),
+
+    path("recibir_humedad_y_temperatura/", views.enviar_humedad_y_temperatura, name="recibir_humedad_y_temperatura/"),
+
     path("api/ultima_temperatura/", views.obtener_temperatura, name="obtener_temperatura"),
     path("api/ultima_flujo/", views.obtener_flujo, name="obtener_flujo"),
 
