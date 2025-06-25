@@ -49,10 +49,9 @@ urlpatterns = [
     path("api/ultima_temperatura/", views.obtener_temperatura, name="obtener_temperatura"),
     path("api/ultima_flujo/", views.obtener_flujo, name="obtener_flujo"),
 
-    # 🚩 CAMBIA esta línea:
-     path("api/ultimo_id/", views.ultimo_id, name="ultimo_id"),
-    # por esta:
-    #path("api/ultimo_id/", views.obtener_ultimo_id, name="ultimo_id"),
+    path("api/ultimo_id/", views.enviar_ultimo_id, name="ultimo_id"),
+
+    path("api/enviar_ultimo_id/", views.recibir_ultimo_id, name="recibir_ultimo_id"),
 
 
     # Endpoints de datos historicos
