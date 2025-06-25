@@ -1,0 +1,19 @@
+<div class="chat-container">
+  <div class="chat-messages">
+    <div *ngFor="let msg of messages" [class.me]="msg.from === 'user'" [class.ia]="msg.from === 'ia'">
+      <b *ngIf="msg.from === 'user'">Tú:</b>
+      <b *ngIf="msg.from === 'ia'">IA:</b>
+      {{ msg.text }}
+    </div>
+  </div>
+  <form (ngSubmit)="sendMessage()">
+    <input
+      type="text"
+      [(ngModel)]="input"
+      name="input"
+      required
+      autocomplete="off"
+      placeholder="Escribe un mensaje..." />
+    <button type="submit">Enviar</button>
+  </form>
+</div>
