@@ -5,7 +5,17 @@ from mongoengine import ObjectIdField
 from datetime import datetime, timezone
 from django.db import models
 import enum
-import datetime
+
+
+# Para convertir objetos MongoEngine a diccionario simple para JSON
+def to_dict(doc):
+    # .to_mongo() devuelve un SON (dict BSON), lo convertimos a dict normal y eliminamos _cls si existe
+    d = doc.to_mongo().to_dict()
+    d.pop('_cls', None)  # opcional si usas herencia
+    # Convertir ObjectId a str para JSON si existe
+    if '_id' in d:
+        d['_id'] = str(d['_id'])
+    return d
 
 # Enumeraciones
 class Impacto(enum.Enum):
@@ -54,17 +64,27 @@ class Usuario(Document):
         return f"{self.nombre_usuario} ({self.nombre})"
 
 class ZonaRiego(Document):
+    usuario_id = ReferenceField(Usuario, required=True)
     nombre = StringField(required=True, max_length=100)
     ubicacion = StringField()
     fecha_creacion = DateTimeField(default=lambda: datetime.now(timezone.utc))
-    usuario = ReferenceField(Usuario, required=True)
+    
 
     meta = {
         'collection': 'zonas_riego'
     }
 
     def __str__(self):
-        return self.nombre
+        return f"ZonaRiego: {self.nombre} (Usuario: {self.usuario_id.nombre_usuario if self.usuario_id else 'N/A'})"
+
+    def to_dict(self):
+        d = to_dict(self)
+        # Agregar usuario como dict o solo su id
+        if self.usuario_id:
+            d['usuario'] = str(self.usuario_id.id)
+        return d
+
+
 
 class Nodo(Document):
     zona_id = ReferenceField(ZonaRiego, required=True)
@@ -77,11 +97,16 @@ class Nodo(Document):
     }
 
     def __str__(self):
-        return f"{self.nombre}"
+        return f"Nodo: {self.nombre} (Zona: {self.zona_id.nombre})"
+
+    def to_dict(self):
+        d = to_dict(self)
+        d['zona'] = str(self.zona_id.id)
+        return d
 
 class Sensor(Document):
     nodo_id = ReferenceField(Nodo, required=True)
-    tipo = StringField(required=True, choices=TipoSensor)
+    tipo = StringField(required=True)
     modelo = StringField()
     descripcion = StringField()
 
@@ -96,6 +121,7 @@ class LecturaSensor(Document):
     sensor_id = ReferenceField(Sensor, required=True)
     nodo_id = ReferenceField(Nodo, required=True)
     zona_id = ReferenceField(ZonaRiego, required=True)
+    tipo = StringField()
     valor = FloatField(required=True)
     unidad = StringField()
     fecha_hora = DateTimeField(default=lambda: datetime.now(timezone.utc))
@@ -111,6 +137,7 @@ class LecturaSensor(Document):
         return f"{self.sensor_id.tipo}: {self.valor} {self.unidad}"
 
 class Sugerencia(Document):
+    IMPACTO_CHOICES = ('bajo', 'medio', 'alto')
     zona_id = ReferenceField(ZonaRiego, required=True)
     fecha = DateTimeField(default=lambda: datetime.now(timezone.utc))
     mensaje = StringField(required=True)
@@ -133,8 +160,9 @@ class ProgramacionDia(EmbeddedDocument):
     temperatura_maxima = FloatField()
 
 class ConfiguracionRiego(Document):
-    zona_id = ReferenceField(ZonaRiego, required=True, unique=True)
-    programacion = ListField(EmbeddedDocumentField(ProgramacionDia))
+    zona_id = ReferenceField(ZonaRiego, required=True)
+    programacion = EmbeddedDocumentField(ProgramacionDia)
+    # programacion = ListField(EmbeddedDocumentField(ProgramacionDia))
 
     meta = {
         'collection': 'configuraciones_riego'
@@ -174,20 +202,20 @@ class RegistroRiego(Document):
 
 class Humedad(Document):
     valor = FloatField(required=True)
-    timestamp = DateTimeField(default=datetime.datetime.utcnow)
+    timestamp = DateTimeField(default=datetime.now)
     sensor_id = StringField(required=True)
 
 class Temperatura(Document):
     valor = FloatField(required=True)
-    timestamp = DateTimeField(default=datetime.datetime.utcnow)
+    timestamp = DateTimeField(default=datetime.now)
     sensor_id = StringField(required=True)
 
 class Flujo(Document):
     valor = FloatField(required=True)
-    timestamp = DateTimeField(default=datetime.datetime.utcnow)
+    timestamp = DateTimeField(default=datetime.now)
     sensor_id = StringField(required=True)
 
 class ID(Document):
     valor = FloatField(required=True)
-    timestamp = DateTimeField(default=datetime.datetime.utcnow)
+    timestamp = DateTimeField(default=datetime.now)
     sensor_id = StringField(required=True)
