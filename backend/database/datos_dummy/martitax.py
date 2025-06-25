@@ -142,8 +142,8 @@ def ZonaSur(usuario1):
     # --- Zonas ---
     zona1 = ZonaRiego(
         usuario_id=usuario1,
-        nombre="Zona Central",
-        ubicacion="Sector A"
+        nombre="Chillan",
+        ubicacion="Sector D"
     )
     zona1.save()
     print(f"Zona de Riego creada: {zona1}")
@@ -153,7 +153,7 @@ def ZonaSur(usuario1):
     nodo1 = Nodo(
         zona_id=zona1,
         nombre="Nodo Principal",
-        descripcion="Nodo de control central",
+        descripcion="Nodo de control periferico",
         coordenadas={"type": "Point", "coordinates": [70.6483, -43.4569]}
     )
     nodo1.save()
