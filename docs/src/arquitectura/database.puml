@@ -27,7 +27,6 @@ package "📁 Configuración & Arquitectura" {
     }
 
 
-
     entity Nodo {
         +_id : ObjectId
         +zona_id : ObjectId
