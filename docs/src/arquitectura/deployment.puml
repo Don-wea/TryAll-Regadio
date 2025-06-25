@@ -1,0 +1,70 @@
+@startuml
+!define RECTANGLE class
+skinparam rectangle {
+  BackgroundColor<<campo>> #D5F5E3
+  BackgroundColor<<nube>> #D6EAF8
+  BackgroundColor<<navegador>> #FAD7A0
+  BorderColor Black
+}
+skinparam componentStyle rectangle
+skinparam defaultTextAlignment center
+
+'--- CAMPO ---
+package "Campo" <<campo>> {
+  node "Dispositivo Edge\n(Raspberry Pi)" {
+    component "Sensores" <<device>>
+    component "Captura Datos"
+    component "Módulo Comunicación" <<device>>
+
+    "Sensores" --> "Captura Datos" : provee variables
+    "Captura Datos" --> "Módulo Comunicación" : transmite datos
+  }
+
+  node "Servidor Local\n(Django)" {
+    component "Backend\n(Django)" <<framework>>
+    component "Motor IA" <<AI>>
+    component "API REST"
+
+    "API REST" --> "Backend\n(Django)"
+    "Motor IA" --> "Backend\n(Django)" : análisis y predicciones
+  }
+
+  database "MongoDB\n(Local)"
+  "Backend\n(Django)" --> "MongoDB\n(Local)" : acceso a datos
+  "Motor IA" --> "MongoDB\n(Local)" : analiza datos históricos
+}
+
+'--- NUBE ---
+package "Nube" <<nube>> {
+  node "Amazon Amplify"
+  node "Amazon API Gateway"
+  node "Amazon DocumentDB"
+
+  "Amazon API Gateway" --> "Amazon DocumentDB"
+  "Amazon DocumentDB" --> "Amazon Amplify"
+}
+
+'--- NAVEGADOR ---
+package "Navegador" <<navegador>> {
+  component "NAVEGADOR\n(LOCAL)"
+  component "NAVEGADOR\n(INTERNET)"
+  component "NAVEGADOR\n(TRY ALL)"
+}
+
+'--- CONEXIONES ENTRE ENTORNOS ---
+
+' Dispositivo Edge al backend local
+"Dispositivo Edge\n(Raspberry Pi)" --> "API REST" : envía datos
+
+' Cliente local a backend local
+"NAVEGADOR\n(LOCAL)" --> "API REST" : solicitudes HTTP
+"NAVEGADOR\n(LOCAL)" --> "MongoDB\n(Local)" : (solo lecturas si aplica)
+
+' Cliente nube (amplify) -> API Gateway
+"NAVEGADOR\n(INTERNET)" --> "Amazon Amplify"
+"NAVEGADOR\n(TRY ALL)" --> "Amazon Amplify"
+
+' Backend local replica en nube
+"API REST" --> "Amazon API Gateway" : sincronización eventual
+
+@enduml
