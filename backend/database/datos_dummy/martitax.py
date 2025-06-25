@@ -55,12 +55,21 @@ def ZonaCentral(usuario1):
     # --- Sensores ---
     sensor1 = Sensor(
         nodo_id=nodo1,
-        tipo='humedad_suelo',
+        tipo='Humedad',
         modelo="HMD-100",
         descripcion="Sensor de humedad del suelo"
     )
     sensor1.save()
     print(f"Sensor creado: {sensor1}")
+
+    sensor2 = Sensor(
+        nodo_id=nodo1,
+        tipo='Temperatura',
+        modelo="HMD-100",
+        descripcion="Sensor de temperatura del suelo"
+    )
+    sensor2.save()
+    print(f"Sensor creado: {sensor2}")
 
 
     # --- Regadores ---
@@ -108,18 +117,31 @@ def ZonaCentral(usuario1):
         fecha_base = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=i)
 
 
-        # Lectura Sensor
-        lectura = LecturaSensor(
+        # Lectura Sensor Humedad
+        lectura_humedad = LecturaSensor(
             sensor_id=sensor1,
             nodo_id=nodo1,
             zona_id=zona1,
-            tipo="humedad_suelo",
+            tipo="Humedad",
             valor=round(random.uniform(60.0, 80.0), 2),
             unidad="%",
             fecha_hora=fecha_base
         )
-        lectura.save()
-        print(f"Lectura Sensor {i+1} creada: {lectura.valor}% en {fecha_base.date()}")
+        lectura_humedad.save()
+        print(f"Lectura Sensor {i+1} Humedad creada: {lectura_humedad.valor}% en {fecha_base.date()}")
+
+        # Lectura Sensor temperatura
+        lectura_temperatura = LecturaSensor(
+            sensor_id=sensor2,
+            nodo_id=nodo1,
+            zona_id=zona1,
+            tipo="Temperatura",
+            valor=round(random.uniform(60.0, 80.0), 2),
+            unidad="%",
+            fecha_hora=fecha_base
+        )
+        lectura_temperatura.save()
+        print(f"Lectura Sensor {i+1} Temperatura creada: {lectura_temperatura.valor}% en {fecha_base.date()}")
 
 
         # Registro de Riego
@@ -170,6 +192,15 @@ def ZonaSur(usuario1):
     sensor1.save()
     print(f"Sensor creado: {sensor1}")
 
+    sensor2 = Sensor(
+        nodo_id=nodo1,
+        tipo="Temperatura",
+        modelo="HMD-100",
+        descripcion="Sensor de humedad del suelo"
+    )
+    sensor2.save()
+    print(f"Sensor creado: {sensor2}")
+
 
     # --- Regadores ---
     regador1 = Regador(
@@ -217,7 +248,7 @@ def ZonaSur(usuario1):
 
 
         # Lectura Sensor
-        lectura = LecturaSensor(
+        lectura_humedad = LecturaSensor(
             sensor_id=sensor1,
             nodo_id=nodo1,
             zona_id=zona1,
@@ -226,8 +257,21 @@ def ZonaSur(usuario1):
             unidad="%",
             fecha_hora=fecha_base
         )
-        lectura.save()
-        print(f"Lectura Sensor {i+1} creada: {lectura.valor}% en {fecha_base.date()}")
+        lectura_humedad.save()
+        print(f"Lectura Sensor {i+1} creada: {lectura_humedad.valor}% en {fecha_base.date()}")
+
+        # Lectura Sensor temperatura
+        lectura_temperatura = LecturaSensor(
+            sensor_id=sensor2,
+            nodo_id=nodo1,
+            zona_id=zona1,
+            tipo="Temperatura",
+            valor=round(random.uniform(60.0, 80.0), 2),
+            unidad="%",
+            fecha_hora=fecha_base
+        )
+        lectura_temperatura.save()
+        print(f"Lectura Sensor {i+1} Temperatura creada: {lectura_temperatura.valor}% en {fecha_base.date()}")
 
 
         # Registro de Riego
@@ -261,12 +305,21 @@ def ZonaSur(usuario1):
     # --- Sensores ---
     sensor2_1 = Sensor(
         nodo_id=nodo2,
-        tipo="humedad_suelo",
+        tipo="Humedad",
         modelo="HMD-100",
         descripcion="Sensor de humedad del suelo"
     )
     sensor2_1.save()
     print(f"Sensor creado: {sensor2_1}")
+
+    sensor2_2 = Sensor(
+        nodo_id=nodo2,
+        tipo="Temperatura",
+        modelo="HMD-100",
+        descripcion="Sensor de humedad del suelo"
+    )
+    sensor2_2.save()
+    print(f"Sensor creado: {sensor2_2}")
 
 
     # --- Regadores ---
@@ -314,18 +367,31 @@ def ZonaSur(usuario1):
         fecha_base = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=i)
 
 
-        # Lectura Sensor
-        lectura = LecturaSensor(
+        # Lectura Sensor Humedad
+        lectura_humedad = LecturaSensor(
             sensor_id=sensor2_1,
             nodo_id=nodo2,
             zona_id=zona1,
-            tipo="humedad_suelo",
+            tipo="Humedad",
             valor=round(random.uniform(60.0, 80.0), 2),
             unidad="%",
             fecha_hora=fecha_base
         )
-        lectura.save()
-        print(f"Lectura Sensor {i+1} creada: {lectura.valor}% en {fecha_base.date()}")
+        lectura_humedad.save()
+        print(f"Lectura Sensor {i+1} creada: {lectura_humedad.valor}% en {fecha_base.date()}")
+
+        # Lectura Sensor Temperatura
+        lectura_temperatura = LecturaSensor(
+            sensor_id=sensor2_2,
+            nodo_id=nodo2,
+            zona_id=zona1,
+            tipo="Temperatura",
+            valor=round(random.uniform(60.0, 80.0), 2),
+            unidad="%",
+            fecha_hora=fecha_base
+        )
+        lectura_temperatura.save()
+        print(f"Lectura Sensor {i+1} creada: {lectura_temperatura.valor}% en {fecha_base.date()}")
 
 
         # Registro de Riego
