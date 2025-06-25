@@ -3,17 +3,19 @@ from rest_framework.response import Response
 from rest_framework import status, viewsets
 from .serializers import ZonaRiegoSerializer, LecturaSensorSerializer, NodoSerializer, SensorSerializer, HumedadSerializer, TemperaturaSerializer, FlujoSerializer
 from .repository import DataRepository
+from rest_framework.decorators import parser_classes
+from rest_framework.parsers import JSONParser
 import os
 import json
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-import datetime
+from datetime import datetime, timezone
 import google.generativeai as genai
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
-
+from pymongo import MongoClient
 
 from rest_framework_mongoengine import viewsets as mongo_viewsets
 from .models import (
@@ -53,12 +55,15 @@ from .serializers import (
 from .utils import hash_password, check_password
 from mongoengine.errors import NotUniqueError, DoesNotExist
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 # JWT
 import jwt
 from django.conf import settings
 from datetime import datetime, timedelta
-
+#base de datos 
+client = MongoClient("mongodb://localhost:27017/")
+db = client['regadio_db']
 #AI 
 def chat_with_gemini(request):
     if request.method == 'POST':
@@ -518,6 +523,42 @@ def recibir_cantidad_flujo(request):
         "mensaje": "Cantidad de flujo actualizada correctamente",
         "cantidad_flujo": cantidad_flujo
     }, status=status.HTTP_200_OK)
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from rest_framework.parsers import JSONParser
+
+@swagger_auto_schema(
+    method='post',
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'cantidad_flujo': openapi.Schema(type=openapi.TYPE_NUMBER, description='Cantidad de flujo objetivo (litros)')
+        },
+        required=['cantidad_flujo']
+    ),
+    responses={201: openapi.Response('Flujo registrado OK')}
+)
+@api_view(['POST'])
+@parser_classes([JSONParser])
+def guardar_flujo_objetivo(request):
+    """
+    Guarda el flujo objetivo en la colección 'registros_riego'
+    POST /api/enviar_flujoabd/
+    Body: { "cantidad_flujo": 123 }
+    """
+    cantidad = request.data.get('cantidad_flujo')
+    if cantidad is None:
+        return Response({"error": "Falta 'cantidad_flujo' en el body"}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        cantidad = float(cantidad)
+    except Exception:
+        return Response({"error": "Debe ser numérico"}, status=status.HTTP_400_BAD_REQUEST)
+    registro = {
+        "cantidad_agua_litros": cantidad,
+        "fecha_hora_inicio": datetime.utcnow()
+    }
+    db.registros_riego.insert_one(registro)
+    return Response({"mensaje": "Flujo objetivo guardado correctamente", "cantidad_agua_litros": cantidad}, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
 def enviar_cantidad_flujo(request):
@@ -624,3 +665,53 @@ def historicos_ultimas_temperaturas(request, cantidad):
         for r in registros
     ]
     return Response(data)
+@swagger_auto_schema(
+    method='post',
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'valor': openapi.Schema(type=openapi.TYPE_NUMBER, description='Valor de humedad (%)')
+        },
+        required=['valor']
+    ),
+    responses={201: openapi.Response('Humedad registrada OK')}
+)
+@api_view(['POST'])
+def guardar_humedad(request):
+    try:
+        valor = float(request.data.get('valor'))
+    except Exception:
+        return Response({"error": "valor es obligatorio y debe ser numérico"}, status=status.HTTP_400_BAD_REQUEST)
+    registro = {
+        "tipo": "Humedad",
+        "valor": valor,
+        "fecha_hora": datetime.utcnow()
+    }
+    db.lecturas_sensor.insert_one(registro)
+    return Response({"mensaje": "Humedad guardada correctamente"}, status=status.HTTP_201_CREATED)
+
+
+@swagger_auto_schema(
+    method='post',
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'valor': openapi.Schema(type=openapi.TYPE_NUMBER, description='Valor de temperatura (°C)')
+        },
+        required=['valor']
+    ),
+    responses={201: openapi.Response('Temperatura registrada OK')}
+)
+@api_view(['POST'])
+def guardar_temperatura(request):
+    try:
+        valor = float(request.data.get('valor'))
+    except Exception:
+        return Response({"error": "valor es obligatorio y debe ser numérico"}, status=status.HTTP_400_BAD_REQUEST)
+    registro = {
+        "tipo": "Temperatura",
+        "valor": valor,
+        "fecha_hora": datetime.utcnow()
+    }
+    db.lecturas_sensor.insert_one(registro)
+    return Response({"mensaje": "Temperatura guardada correctamente"}, status=status.HTTP_201_CREATED)
