@@ -11,6 +11,10 @@ export class SensorService {
   URL = 'http://127.0.0.1:8000/api/';
   constructor(private http: HttpClient) { }
 
+  getHumedadTemperaturaActual(): Observable<any> {
+    return this.http.get(this.URL + 'recibir_humedad_y_temperatura/');
+  }
+
   getHumedadActual(): Observable<any> {
     return this.http.get(this.URL + 'api/ultima_humedad/');
   }
@@ -20,7 +24,7 @@ export class SensorService {
   }
   
   getFlujoActual(): Observable<any> {
-    return this.http.get(this.URL + 'api/ultima_flujo/');
+    return this.http.get(this.URL + 'recibir_flujo_actual/');
   }
 
   getIDActual(): Observable<any> {

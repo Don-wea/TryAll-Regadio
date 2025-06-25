@@ -33,7 +33,7 @@ export class ControlDeFlujoComponent {
   obtenerFlujo() {
     this.sensor.getFlujoActual().subscribe({
       next: (data: any) => {
-        this.flujo_actual = data.cantidad_flujo;
+        this.flujo_actual = data.flujo_actual;
       },
       error: (error) => {
         console.error('Error al obtener flujo:', error);

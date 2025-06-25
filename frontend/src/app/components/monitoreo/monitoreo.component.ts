@@ -21,9 +21,9 @@ export class MonitoreoComponent implements OnInit {
   zonaActual: any = null;
   indiceZonaActual: number = 0;
 
-  datoTemperaturaReal = "";
-  datoHumedadReal = "";
-  datoFlujoReal = "";
+  datoTemperaturaReal = 0;
+  datoHumedadReal = 0;
+  datoFlujoReal = 0;
   idReal = "";
 
   constructor(private sensorService: SensorService, private apiService: APIService) {}
@@ -31,8 +31,7 @@ export class MonitoreoComponent implements OnInit {
   ngOnInit() {
     this.cargarZonas();
     setInterval(() => {
-      this.humedadTiempoReal();
-      this.temperaturatTiempoReal();
+      this.HumedadyTiempoReal();
       this.flujoTiempoReal();
       this.idTiempoReal();
     }, 1000); // cada segundo
@@ -44,21 +43,16 @@ export class MonitoreoComponent implements OnInit {
     });
   }
 
-  humedadTiempoReal() {
-    this.sensorService.getHumedadActual().subscribe((data: any) => {
+  HumedadyTiempoReal(){
+    this.sensorService.getHumedadTemperaturaActual().subscribe((data: any) => {
       this.datoHumedadReal = data.humedad;
-    });
-  }
-
-  temperaturatTiempoReal() {
-    this.sensorService.getTemperaturaActual().subscribe((data: any) => {
       this.datoTemperaturaReal = data.temperatura;
     });
   }
 
   flujoTiempoReal() {
     this.sensorService.getFlujoActual().subscribe((data: any) => {
-      this.datoFlujoReal = data.flujo;
+      this.datoFlujoReal = data.flujo_actual;
     });
   }
 
