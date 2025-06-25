@@ -636,7 +636,7 @@ def historicos_ultimas_humedades(request, cantidad):
     data = [
         {
             'sensor_id': str(r.sensor_id.id) if r.sensor_id else None,
-            'zona_id': str(r.zona_id) if r.zona_id else None,
+            'zona_id': str(r.zona_id.id) if r.zona_id else None,
             'valor': r.valor,
             'unidad': r.unidad,
             'fecha_hora': r.fecha_hora.isoformat(),
@@ -652,7 +652,7 @@ def historicos_ultimas_temperaturas(request, cantidad):
     data = [
         {
             'sensor_id': str(r.sensor_id.id) if r.sensor_id else None,
-            'zona_id': str(r.zona_id) if r.zona_id else None,
+            'zona_id': str(r.zona_id.id) if r.zona_id else None,
             'valor': r.valor,
             'unidad': r.unidad,
             'fecha_hora': r.fecha_hora.isoformat(),
