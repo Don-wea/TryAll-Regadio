@@ -53,6 +53,10 @@ urlpatterns = [
 
     path("api/enviar_ultimo_id/", views.recibir_ultimo_id, name="recibir_ultimo_id"),
 
+    #enviar flujo,guardad humedad y guardar temperatura
+    path("enviar_flujoabd/", views.guardar_flujo_objetivo, name="guardar_flujo_objetivo"),
+    path("guardar_humedad/", views.guardar_humedad, name="guardar_humedad"),              # POST: guarda humedad
+    path("guardar_temperatura/", views.guardar_temperatura, name="guardar_temperatura"),  # POST: guarda temperatura
 
     # Endpoints de datos historicos
     #regadores
