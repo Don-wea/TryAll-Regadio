@@ -8,9 +8,11 @@ import { routes } from '../../app.routes';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 //my components
 import { HeaderComponent } from '../header/header.component';
+import { AuthService } from '../../auth/auth.service'; // Importa el servicio de autenticación
 // import { FooterComponent } from '../footer/footer.component';
 
 @Component({
@@ -18,7 +20,8 @@ import { HeaderComponent } from '../header/header.component';
   imports: [
      MatSidenavModule,
      MatListModule,
-     MatIconModule, 
+     MatIconModule,
+     MatButtonModule,
      CommonModule, 
      HeaderComponent, 
     //  FooterComponent,
@@ -31,8 +34,12 @@ export class LayoutComponent {
   constructor (  //inyectamos el servicio y las rutas
     private router: Router,  // Paraa navegar entre páginas
     private route:ActivatedRoute,  //información de la ruta actual
-    // private authService: AuthService  // manejar el login/logout
+    private authService: AuthService  // manejar el login/logout
     ) { }
+
+  isActive(route: string): boolean {
+    return this.router.url === route;
+  }
   
   navigateToDashboard() {  // Función que nos lleva al dashboard
     this.router.navigate(['/dashboard']);
@@ -52,5 +59,12 @@ export class LayoutComponent {
   // navigateToMyMap() {  // Función para ir a la página "Content"
   //   this.router.navigate(['/my-map']); 
   // }
+
+  logout() {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+      this.authService.logout();  // Llama al método de logout del servicio de autenticación
+      this.router.navigate(['/login']);
+    }
+  }
 
 }
