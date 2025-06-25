@@ -45,6 +45,14 @@ urlpatterns = [
     # por esta:
     #path("api/ultimo_id/", views.obtener_ultimo_id, name="ultimo_id"),
 
+
+    # Endpoints de datos historicos
+    #regadores
+    path('datos_historicos/ultimos_flujos/<int:cantidad>/', views.historicos_ultimos_flujos, name='ultimos_flujos'), # registros de riego
+    #sensores
+    path('datos_historicos/ultimas_humedades/<int:cantidad>/', views.historicos_ultimas_humedades, name='ultimas_humedades'),  # lectura sensor - humedad
+    path('datos_historicos/ultimas_temperaturas/<int:cantidad>/', views.historicos_ultimas_temperaturas, name='ultimas_temperaturas'),  # lectura sensor - temperatura
+
     # Endpoints para JWT
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/', fake_token_obtain_pair, name='fake_token_obtain_pair'),

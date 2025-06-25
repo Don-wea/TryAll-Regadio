@@ -7,14 +7,12 @@ import os
 import json
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 import datetime
 import google.generativeai as genai
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
-
 
 
 from rest_framework_mongoengine import viewsets as mongo_viewsets
@@ -560,3 +558,69 @@ def flujo_ultimo(request):
     ultimo = Flujo.objects.last()
     serializer = FlujoSerializer(ultimo)
     return Response(serializer.data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ----- GET DATOS HISTORICOS -----
+
+
+# Registros de riego (últimos n flujos)
+@api_view(['GET'])
+def historicos_ultimos_flujos(request, cantidad):
+    registros = RegistroRiego.objects.order_by('-fecha_hora_inicio').limit(cantidad)
+    data = [
+        {
+            'regador_id': str(r.regador_id.id) if r.regador_id else None,
+            'zona_id': str(r.zona_id.id) if r.zona_id else None,
+            'cantidad_agua_litros': r.cantidad_agua_litros,
+            'energia_consumida_kwh': r.energia_consumida_kwh,
+            'duracion_segundos': r.duracion_segundos,
+            'fecha_hora_inicio': r.fecha_hora_inicio.isoformat(),
+            'fecha_hora_fin': r.fecha_hora_fin.isoformat(),
+        }
+        for r in registros
+    ]
+    return Response(data)
+
+# Lecturas de humedad
+@api_view(['GET'])
+def historicos_ultimas_humedades(request, cantidad):
+    registros = LecturaSensor.objects(tipo="Humedad").order_by('-fecha_hora').limit(cantidad)
+    data = [
+        {
+            'sensor_id': str(r.sensor_id.id) if r.sensor_id else None,
+            'zona_id': str(r.zona_id) if r.zona_id else None,
+            'valor': r.valor,
+            'unidad': r.unidad,
+            'fecha_hora': r.fecha_hora.isoformat(),
+        }
+        for r in registros
+    ]
+    return Response(data)
+
+# Lecturas de temperatura
+@api_view(['GET'])
+def historicos_ultimas_temperaturas(request, cantidad):
+    registros = LecturaSensor.objects(tipo="Temperatura").order_by('-fecha_hora').limit(cantidad)
+    data = [
+        {
+            'sensor_id': str(r.sensor_id.id) if r.sensor_id else None,
+            'zona_id': str(r.zona_id) if r.zona_id else None,
+            'valor': r.valor,
+            'unidad': r.unidad,
+            'fecha_hora': r.fecha_hora.isoformat(),
+        }
+        for r in registros
+    ]
+    return Response(data)
