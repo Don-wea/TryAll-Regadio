@@ -6,6 +6,7 @@
 2. Node.js - angular 19 standalone (frontend)
 3. mongoDB 7 (backend)
 4. python 3.11.0 (backend)
+5. En backend/regadio_backend/views.py se debe agregar una api key para poder usar la IA. Link: https://aistudio.google.com/app/apikey
 
 ## Instalacion
 
