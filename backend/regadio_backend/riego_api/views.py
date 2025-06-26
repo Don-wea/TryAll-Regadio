@@ -76,7 +76,7 @@ def chat_with_gemini(request):
                 return JsonResponse({'error': 'No message provided'}, status=400)
 
             # Usa tu API key aquí:
-            api_key = "AIzaSyBABrw0-QDkG85bEOGux8JirHrpEEeg-Cg"
+            api_key = ""
             endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
             headers = {'Content-Type': 'application/json'}
             data = {
